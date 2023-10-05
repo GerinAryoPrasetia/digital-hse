@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\WorkingPermit\WorkingPermitController as WorkingPermitWorkingPermitController;
 use App\Http\Controllers\WorkingPermitController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -17,16 +18,16 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+// Route::get('/', function () {
+//     return Inertia::render('Welcome', [
+//         'canLogin' => Route::has('login'),
+//         'canRegister' => Route::has('register'),
+//         'laravelVersion' => Application::VERSION,
+//         'phpVersion' => PHP_VERSION,
+//     ]);
+// });
 
-Route::get('/modul', function () {
+Route::get('/', function () {
     return Inertia::render('Modul/Modul');
 })->middleware(['auth', 'verified'])->name('modul');
 
@@ -34,7 +35,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/modul/working-permits', [WorkingPermitController::class, 'index'])->name('working-permits.index');
+
+    Route::get('/modul/working-permits', [WorkingPermitWorkingPermitController::class, 'index'])->name('working-permits.index');
+    Route::get('/modul/working-permits/create', [WorkingPermitWorkingPermitController::class, 'create'])->name('working-permits.create');
+    Route::post('/modul/working-permits', [WorkingPermitWorkingPermitController::class, 'store'])->name('working-permits.store');
 });
 
 require __DIR__ . '/auth.php';
