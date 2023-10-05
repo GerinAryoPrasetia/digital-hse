@@ -23,6 +23,8 @@ class UserSeeder extends Seeder
                 'email' => 'admin@gmail.com',
                 'password' => Hash::make('testpassword'),
                 'role' => 'admin',
+                'departement' => 'Security',
+                'position' => 'Security',
             ],
             [
                 'id' => Str::uuid(),
@@ -30,6 +32,8 @@ class UserSeeder extends Seeder
                 'email' => 'user@gmail.com',
                 'password' => Hash::make('testpassword'),
                 'role' => 'user',
+                'departement' => 'Security',
+                'position' => 'Security',
             ]
         );
     }
