@@ -39,6 +39,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/modul/working-permits', [WorkingPermitWorkingPermitController::class, 'index'])->name('working-permits.index');
     Route::get('/modul/working-permits/create', [WorkingPermitWorkingPermitController::class, 'create'])->name('working-permits.create');
     Route::post('/modul/working-permits', [WorkingPermitWorkingPermitController::class, 'store'])->name('working-permits.store');
+    Route::get('/modul/working-permits/{id}', [WorkingPermitWorkingPermitController::class, 'show'])->name('working-permits.show');
+    Route::get('/working-permits/my-works', [WorkingPermitWorkingPermitController::class, 'listWorks'])->name('listWorks');
+    Route::get('/working-permits/my-approval', [WorkingPermitWorkingPermitController::class, 'listApprovals'])->name('listApprovals');
 });
 
 require __DIR__ . '/auth.php';

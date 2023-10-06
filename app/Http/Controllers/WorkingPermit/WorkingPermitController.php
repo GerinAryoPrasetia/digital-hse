@@ -24,10 +24,18 @@ class WorkingPermitController extends Controller
     public function index()
     {
         //
-        $works = WorkingPermits::with('natureOfWork', 'issuer')->get();
+        $works = WorkingPermits::with('natureOfWork', 'issuer')->orderBy('created_at', 'desc')->orderBy('created_at', 'desc')
+            ->take(3)->get();
         // dd($works);
+        $approval = WorkingPermits::where('supervisor_id', auth()->user()->getAuthIdentifier())
+            ->orWhere('officer_id', auth()->user()->getAuthIdentifier())
+            ->orderBy('created_at', 'desc')
+            ->take(3)
+            ->get();
+        // dd($approval);
         return Inertia::render('Modul/WorkingPermits/Index', [
             'works' => $works,
+            'approval' => $approval,
         ]);
     }
 
@@ -138,6 +146,10 @@ class WorkingPermitController extends Controller
     public function show(string $id)
     {
         //
+        $permit = WorkingPermits::with('natureOfWork', 'safetyProcedure', 'safetyPersonal', 'safetyEquipment', 'issuer', 'supervisor', 'officer')->where('id', $id)->first();
+        return Inertia::render('Modul/WorkingPermits/Detail', [
+            'permit' => $permit,
+        ]);
     }
 
     /**
@@ -179,5 +191,27 @@ class WorkingPermitController extends Controller
         $uniqueNumber = "WP-$formattedDateTime-$randomString";
 
         return $uniqueNumber;
+    }
+
+    public function listWorks()
+    {
+        //
+        $items = WorkingPermits::with('natureOfWork', 'issuer')->orderBy('created_at', 'desc')->get();
+
+        return Inertia::render('Modul/WorkingPermits/AllWorks', [
+            'items' => $items,
+        ]);
+    }
+
+    public function listApprovals()
+    {
+        //
+        $items = WorkingPermits::where('supervisor_id', auth()->user()->getAuthIdentifier())
+            ->orWhere('officer_id', auth()->user()->getAuthIdentifier())
+            ->orderBy('created_at', 'desc')
+            ->get();
+        return Inertia::render('Modul/WorkingPermits/AllApproval', [
+            'items' => $items,
+        ]);
     }
 }

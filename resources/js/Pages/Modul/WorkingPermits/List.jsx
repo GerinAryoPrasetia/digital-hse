@@ -1,5 +1,6 @@
 import formatDateToDDMMYYYYHHMM from "@/Helper/ParseDate";
 import React from "react";
+import { Link } from "@inertiajs/react";
 
 export default function List({ items = [], ...props }) {
     return (
@@ -33,7 +34,9 @@ export default function List({ items = [], ...props }) {
                             </p>
                         </div>
                         <div>
-                            <p className=" text-blue-600">Open</p>
+                            <Link href={route("working-permits.show", item.id)}>
+                                <p className=" text-blue-600">Open</p>
+                            </Link>
                         </div>
                     </div>
                 );

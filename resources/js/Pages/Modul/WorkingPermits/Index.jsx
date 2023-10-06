@@ -4,40 +4,7 @@ import { Link } from "@inertiajs/react";
 import PrimaryButton from "@/Components/PrimaryButton";
 import List from "./List";
 
-export default function WorkingPermits({ auth, works }) {
-    console.log(works);
-    // const dummyWorks = [
-    //     {
-    //         id: "ec0ff09a-baa8-40c8-99b1-0f53e2979cd2",
-    //         formNumber: "FORM-1231-XXX",
-    //         status: "pending",
-    //         workArea: [],
-    //         natureOfWork: [],
-    //         safetyProcedure: [],
-    //         safetyPersonal: [],
-    //         safetyEquipment: [],
-    //     },
-    //     {
-    //         id: "ec0ff09a-baa8-40c8-99b1-0f53e2979cd2",
-    //         formNumber: "FORM-1233-YYY",
-    //         status: "done",
-    //         workArea: [],
-    //         natureOfWork: [],
-    //         safetyProcedure: [],
-    //         safetyPersonal: [],
-    //         safetyEquipment: [],
-    //     },
-    //     {
-    //         id: "ec0ff09a-baa8-40c8-99b1-0f53e2979cd2",
-    //         formNumber: "FORM-1233-YYY",
-    //         status: "rejected",
-    //         workArea: [],
-    //         natureOfWork: [],
-    //         safetyProcedure: [],
-    //         safetyPersonal: [],
-    //         safetyEquipment: [],
-    //     },
-    // ];
+export default function WorkingPermits({ auth, works, approval }) {
     return (
         <Authenticated user={auth.user}>
             <div className="container m-auto">
@@ -52,19 +19,37 @@ export default function WorkingPermits({ auth, works }) {
                 <div>
                     <h3 className="text-center font-bold">Your Work</h3>
                     <List items={works} />
-                    <p className="text-center text-sm mb-4 text-blue-600">
-                        Show More
-                    </p>
+                    {works.length == 0 ? (
+                        <p className="text-center text-sm mb-4 mt-4 cursor-pointer">
+                            No Data
+                        </p>
+                    ) : (
+                        <Link href={route("listWorks")}>
+                            <p className="text-center text-sm mb-4 text-blue-600">
+                                Show More
+                            </p>
+                        </Link>
+                    )}
                 </div>
                 <hr />
                 <div className="mt-4">
                     <h3 className="text-center font-bold">
                         Need Your Approval
                     </h3>
-                    <List items={works} />
-                    <p className="text-center text-sm mb-4 text-blue-600">
-                        Show More
-                    </p>
+                    <List items={approval} />
+                    {approval.length == 0 ? (
+                        <p className="text-center text-sm mb-4 mt-4 cursor-pointer">
+                            No Data
+                        </p>
+                    ) : (
+                        <Link href={route("listApprovals")}>
+                            <div>
+                                <p className="text-center text-sm mb-4 mt-4 text-blue-600">
+                                    Show More
+                                </p>
+                            </div>
+                        </Link>
+                    )}
                 </div>
             </div>
         </Authenticated>
