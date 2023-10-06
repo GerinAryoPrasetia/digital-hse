@@ -214,4 +214,50 @@ class WorkingPermitController extends Controller
             'items' => $items,
         ]);
     }
+
+    public function approvePermit(string $id)
+    {
+        //
+        $permit = WorkingPermits::where('id', $id)->first();
+        $user_id = auth()->user()->getAuthIdentifier();
+        if (($user_id == $permit->supervisor_id || $user_id == $permit->officer_id) && $permit->is_approved_second_step == true) {
+            # code...
+            // dd("done");
+            if ($user_id == $permit->supervisor_id && $permit->is_done_by_supervisor == false) {
+
+                $permit->is_done_by_supervisor = true;
+            } else {
+                $permit->is_done_by_officer = true;
+                $permit->status = 'done';
+            }
+        } else if ($user_id == $permit->officer_id && $permit->is_approved_first_step == true) {
+
+            $permit->is_approved_second_step = true;
+            $permit->second_approved_at = Carbon::now();
+        } else if ($user_id == $permit->supervisor_id && $permit->is_approved_first_step == false) {
+
+            $permit->is_approved_first_step = true;
+            $permit->first_approved_at = Carbon::now();
+        } else {
+            return redirect()->route('working-permits.show', $id)->with('error', 'You are not allowed to approve this working permit');
+        }
+        $permit->save();
+
+        return redirect()->route('working-permits.show', $id)->with('success', 'Working Permit Approved Successfully');
+    }
+
+    public function reject(string $id)
+    {
+        $permit = WorkingPermits::where('id', $id)->first();
+        $user_id = auth()->user()->getAuthIdentifier();
+
+        if ($user_id != $permit->supervisor_id || $user_id != $permit->officer_id) {
+            return redirect()->route('working-permits.show', $id)->with('error', 'You are not allowed to reject this working permit');
+        } else {
+            $permit->is_rejected = true;
+            $permit->status = 'rejected';
+            $permit->save();
+            return redirect()->route('working-permits.show', $id)->with('success', 'Working Permit Rejected Successfully');
+        }
+    }
 }

@@ -23,8 +23,8 @@ export default function List({ items = [], ...props }) {
                                 Status :{" "}
                                 <span
                                     className={`text-sm font-bold ${
-                                        item.is_approved_first_step === 0 ||
-                                        item.is_approved_second_step === 0
+                                        item.is_done_by_officer === 0 &&
+                                        item.is_done_by_supervisor === 0
                                             ? "text-yellow-500"
                                             : "text-green-500"
                                     }`}
