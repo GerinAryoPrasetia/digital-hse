@@ -44,6 +44,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/working-permits/my-approval', [WorkingPermitWorkingPermitController::class, 'listApprovals'])->name('listApprovals');
     Route::post('/working-permits/{id}/approve', [WorkingPermitWorkingPermitController::class, 'approvePermit'])->name('working-permits.approve');
     Route::post('/working-permits/{id}/reject', [WorkingPermitWorkingPermitController::class, 'reject'])->name('working-permits.reject');
+
+    //apar
+    Route::get('/modul/apar', [App\Http\Controllers\Apar\AparController::class, 'index'])->name('apar.index');
 });
 
 require __DIR__ . '/auth.php';
