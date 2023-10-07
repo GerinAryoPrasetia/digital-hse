@@ -47,6 +47,8 @@ Route::middleware('auth')->group(function () {
 
     //apar
     Route::get('/modul/apar', [App\Http\Controllers\Apar\AparController::class, 'index'])->name('apar.index');
+    Route::get('/modul/create', [App\Http\Controllers\Apar\AparController::class, 'create'])->name('apar.create');
+    Route::post('/modul/apar', [App\Http\Controllers\Apar\AparController::class, 'store'])->name('apar.store');
 });
 
 require __DIR__ . '/auth.php';

@@ -261,11 +261,7 @@ export default function WorkingPermitForm({ auth, issuer, permit, users }) {
         setCheckedItemsSafetyEquipment(updatedCheckedItems);
         setData("safetyEquipment", updatedCheckedItems);
     };
-    // useEffect(() => {
-    //     setData("issuerName", auth.user.name);
-    //     setData("issuerDepartement", auth.user.departement);
-    //     setData("issuerID", auth.user.id);
-    // }, []);
+
     const { data, setData, post, processing, errors, reset } = useForm({
         permitToWork: "",
         workSite: "",

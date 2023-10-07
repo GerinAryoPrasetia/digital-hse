@@ -12,9 +12,11 @@ export default function Modul({ auth }) {
                         <p className="text-center font-bold">Working Permits</p>
                     </div>
                 </Link>
-                <div className="m-auto p-4 bg-gray-100 my-4 rounded-lg mx-6">
-                    <p className="text-center font-bold">APAR</p>
-                </div>
+                <Link href={route("apar.index")}>
+                    <div className="m-auto p-4 bg-gray-100 my-4 rounded-lg mx-6">
+                        <p className="text-center font-bold">APAR</p>
+                    </div>
+                </Link>
                 <div className="m-auto p-4 bg-gray-100 my-4 rounded-lg mx-6">
                     <p className="text-center font-bold">Incidents</p>
                 </div>
