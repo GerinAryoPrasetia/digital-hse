@@ -6,6 +6,7 @@ use App\Models\WP\NatureOfWork;
 use App\Models\WP\SafetyEquipment;
 use App\Models\WP\SafetyPersonal;
 use App\Models\WP\SafetyProcedure;
+use App\Models\WP\WpAttachments;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -76,5 +77,10 @@ class WorkingPermits extends Model
     public function safetyPersonal()
     {
         return $this->hasMany(SafetyPersonal::class, 'working_permit_id');
+    }
+
+    public function attachments()
+    {
+        return $this->hasMany(WpAttachments::class, 'working_permit_id');
     }
 }

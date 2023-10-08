@@ -2,7 +2,7 @@ import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 import React, { useEffect, useState } from "react";
-import { Collapse, Select } from "antd";
+import { Collapse, Modal, Select, Upload } from "antd";
 import { useForm } from "@inertiajs/react";
 import TextInput from "@/Components/TextInput";
 import InputError from "@/Components/InputError";
@@ -11,7 +11,16 @@ import Dropdown from "@/Components/Dropdown";
 // import Select from "@/Components/Select";
 import Checkbox from "@/Components/Checkbox";
 
+import { PlusOutlined, UploadOutlined } from "@ant-design/icons";
+
 export default function WorkingPermitForm({ auth, issuer, permit, users }) {
+    const getBase64 = (file) =>
+        new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = (error) => reject(error);
+        });
     const checkboxData = [
         //work area
         { id: "Hazardous area", label: "Hazardous area" },
@@ -152,6 +161,11 @@ export default function WorkingPermitForm({ auth, issuer, permit, users }) {
     const [checkedItemsSafetyEquipment, setCheckedItemsSafetyEquipment] =
         useState([]);
 
+    const [fileList, setFileList] = useState([]);
+    const [previewOpen, setPreviewOpen] = useState(false);
+    const [previewImage, setPreviewImage] = useState("");
+    const [previewTitle, setPreviewTitle] = useState("");
+
     const handleCheckboxChange = (event) => {
         const { id, checked } = event.target;
 
@@ -262,6 +276,35 @@ export default function WorkingPermitForm({ auth, issuer, permit, users }) {
         setData("safetyEquipment", updatedCheckedItems);
     };
 
+    const uploadButton = (
+        <div>
+            <PlusOutlined />
+            <div
+                style={{
+                    marginTop: 8,
+                }}
+            >
+                Upload
+            </div>
+        </div>
+    );
+
+    const handleCancel = () => setPreviewOpen(false);
+    const handlePreview = async (file) => {
+        if (!file.url && !file.preview) {
+            file.preview = await getBase64(file.originFileObj);
+        }
+        setPreviewImage(file.url || file.preview);
+        setPreviewOpen(true);
+        setPreviewTitle(
+            file.name || file.url.substring(file.url.lastIndexOf("/") + 1)
+        );
+    };
+    const handleChangeImage = ({ fileList: newFileList }) => {
+        setFileList(newFileList);
+        setData("attachments", newFileList);
+    };
+
     const { data, setData, post, processing, errors, reset } = useForm({
         permitToWork: "",
         workSite: "",
@@ -281,6 +324,7 @@ export default function WorkingPermitForm({ auth, issuer, permit, users }) {
         safetyEquipment: [],
         supervisorId: "",
         safetyOfficerId: "",
+        attachments: [],
     });
 
     const filterOption = (input, option) =>
@@ -709,6 +753,37 @@ export default function WorkingPermitForm({ auth, issuer, permit, users }) {
                             }}
                         />
                     </div>
+                </div>
+            ),
+        },
+        {
+            key: "5",
+            label: "Attachments",
+            children: (
+                <div>
+                    <Upload
+                        beforeUpload={() => false}
+                        listType="picture-card"
+                        fileList={fileList}
+                        onPreview={handlePreview}
+                        onChange={handleChangeImage}
+                    >
+                        {fileList.length >= 999 ? null : uploadButton}
+                    </Upload>
+                    <Modal
+                        open={previewOpen}
+                        title={previewTitle}
+                        footer={null}
+                        onCancel={handleCancel}
+                    >
+                        <img
+                            alt="example"
+                            style={{
+                                width: "100%",
+                            }}
+                            src={previewImage}
+                        />
+                    </Modal>
                 </div>
             ),
         },

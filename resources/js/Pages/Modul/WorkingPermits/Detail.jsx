@@ -1,11 +1,12 @@
 import formatDateToDDMMYYYYHHMM from "@/Helper/ParseDate";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 import { useForm } from "@inertiajs/react";
-import { Collapse, Steps } from "antd";
+import { Collapse, Image, Steps } from "antd";
 import React, { useEffect, useState } from "react";
 
 export default function Detail({ auth, permit, flash }) {
     // console.log("auth", auth.user.id);
+    console.log(permit);
     const [activeKey, setActiveKey] = useState(0);
     const [isSupervisor, setIsSupervisor] = useState(false);
     const [isOfficer, setIsOfficer] = useState(false);
@@ -236,6 +237,23 @@ export default function Detail({ auth, permit, flash }) {
                 </div>
             ),
         },
+        {
+            key: 5,
+            label: "Attachments",
+            children: (
+                <div>
+                    {permit.attachments.map((item, index) =>
+                        item.attachment_type.indexOf("image/") === 0 ? (
+                            <Image
+                                key={index} // Remember to add a unique key for each rendered element
+                                width={200}
+                                src={`/storage/working_permit_attachments/${item.attachment_path}`}
+                            />
+                        ) : null
+                    )}
+                </div>
+            ),
+        },
     ];
 
     // let step = permit./
@@ -367,8 +385,8 @@ export default function Detail({ auth, permit, flash }) {
                     isSupervisor &&
                     permit.is_approved_second_step == 1 &&
                     permit.is_approved_first_step == 1 &&
-                    (permit.is_done_by_officer == 1 ||
-                        permit.is_done_by_supervisor == 1) && (
+                    (permit.is_done_by_officer == 0 ||
+                        permit.is_done_by_supervisor == 0) && (
                         <div>
                             <div className="flex justify-evenly my-4">
                                 <button

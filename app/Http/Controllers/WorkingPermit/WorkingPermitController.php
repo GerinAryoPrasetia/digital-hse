@@ -9,9 +9,11 @@ use App\Models\WP\SafetyEquipment;
 use App\Models\WP\SafetyPersonal;
 use App\Models\WP\SafetyProcedure;
 use App\Models\WP\WorkArea;
+use App\Models\WP\WpAttachments;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 
@@ -23,7 +25,7 @@ class WorkingPermitController extends Controller
      */
     public function index(Request $request)
     {
-        $works = WorkingPermits::with('natureOfWork', 'issuer')->orderBy('created_at', 'desc')->orderBy('created_at', 'desc')
+        $works = WorkingPermits::with('natureOfWork', 'issuer')->orderBy('created_at', 'desc')
             ->take(3)->get();
         // dd($works);
         $approval = WorkingPermits::where('supervisor_id', auth()->user()->getAuthIdentifier())
@@ -95,6 +97,25 @@ class WorkingPermitController extends Controller
                 'status' => 'pending',
             ]);
 
+            foreach ($request->file('attachments') as $attData) {
+                // dd($attData);
+                $attFile = $attData['originFileObj'];
+                $originalName = str_replace(' ', '', $attFile->getClientOriginalName());
+
+                WpAttachments::create([
+                    'working_permit_id' => $working_permits->id,
+                    'attachment_name' =>  $originalName,
+                    'attachment_path' =>  $originalName,
+                    'attachment_type' => $attFile->getMimeType(),
+                ]);
+
+                $attFile->move(
+                    Storage::path('public/working_permit_attachments'),
+                    $originalName
+                );
+            }
+
+
             foreach ($request->natureOfWork as $value) {
                 NatureOfWork::create([
                     'working_permit_id' => $working_permits->id,
@@ -145,7 +166,7 @@ class WorkingPermitController extends Controller
     public function show(string $id)
     {
         //
-        $permit = WorkingPermits::with('natureOfWork', 'safetyProcedure', 'safetyPersonal', 'safetyEquipment', 'issuer', 'supervisor', 'officer')->where('id', $id)->first();
+        $permit = WorkingPermits::with('natureOfWork', 'safetyProcedure', 'safetyPersonal', 'safetyEquipment', 'issuer', 'supervisor', 'officer', 'attachments')->where('id', $id)->first();
         return Inertia::render('Modul/WorkingPermits/Detail', [
             'permit' => $permit,
         ]);

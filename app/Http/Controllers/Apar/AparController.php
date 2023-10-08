@@ -27,7 +27,10 @@ class AparController extends Controller
         // dd($request->area_id);
         // dd($query);
         $user = auth()->user()->getAuthIdentifier();
-        $apar_report = AparReport::with('apar_area', 'checked_by', 'acknowladge_user', 'apar_condition.apar_item_condition')->where('checked_by_id', $user)->take(3)->get();
+        $apar_report = AparReport::with('apar_area', 'checked_by', 'acknowladge_user', 'apar_condition.apar_item_condition')->where('checked_by_id', $user)
+            ->orderBy('created_at', 'desc')
+            ->take(3)
+            ->get();
         // dd($apar_report);
         if ($request->has('area_id')) {
             # code...
@@ -159,6 +162,10 @@ class AparController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function verified(Request $request)
+    {
     }
 
     public function generateUniqueNumberReport()
