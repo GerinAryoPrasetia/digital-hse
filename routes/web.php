@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Apar\AparController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WorkingPermit\WorkingPermitController as WorkingPermitWorkingPermitController;
 use App\Http\Controllers\WorkingPermitController;
@@ -49,6 +50,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/modul/apar', [App\Http\Controllers\Apar\AparController::class, 'index'])->name('apar.index');
     Route::get('/modul/create', [App\Http\Controllers\Apar\AparController::class, 'create'])->name('apar.create');
     Route::post('/modul/apar', [App\Http\Controllers\Apar\AparController::class, 'store'])->name('apar.store');
+    Route::get('/modul/apar/{id}', [AparController::class, 'show'])->name('apar.show');
 });
 
 require __DIR__ . '/auth.php';

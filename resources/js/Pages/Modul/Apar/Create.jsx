@@ -29,6 +29,11 @@ export default function Create({ auth, user, area, aparItem }) {
         control_ujitekan: "",
         keterangan: "",
         expired_at: "",
+
+        hse_id: "",
+        p2k_id: "",
+        month_checked: "",
+        year_checked: "",
         //
         apar_item_condition: [],
         // apar_item_condition_remarks: [],
@@ -53,7 +58,8 @@ export default function Create({ auth, user, area, aparItem }) {
     //         },
     //     ]);
     // };
-
+    const filterOption = (input, option) =>
+        (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
     const items = [
         {
             key: "1",
@@ -81,6 +87,9 @@ export default function Create({ auth, user, area, aparItem }) {
                             value="Acknowladge by"
                         />
                         <Select
+                            showSearch
+                            optionFilterProp="children"
+                            filterOption={filterOption}
                             style={{
                                 width: "100%",
                                 height: 42,
@@ -97,6 +106,9 @@ export default function Create({ auth, user, area, aparItem }) {
                     <div className="my-2">
                         <InputLabel htmlFor="area" value="Area" />
                         <Select
+                            showSearch
+                            optionFilterProp="children"
+                            filterOption={filterOption}
                             style={{
                                 width: "100%",
                                 height: 42,
@@ -146,6 +158,9 @@ export default function Create({ auth, user, area, aparItem }) {
                     <div className="my-2">
                         <InputLabel htmlFor="apar_jenis" value="Jenis APAR" />
                         <Select
+                            showSearch
+                            optionFilterProp="children"
+                            filterOption={filterOption}
                             style={{
                                 width: "100%",
                                 height: 42,
@@ -301,6 +316,70 @@ export default function Create({ auth, user, area, aparItem }) {
             label: "APAR ITEM CONDITION",
             children: (
                 <div>
+                    <div className="my-2">
+                        <InputLabel
+                            htmlFor="month_checked"
+                            value="Month Checked"
+                        />
+                        <DatePicker
+                            picker="month"
+                            className="w-full mt-2"
+                            onChange={(date, dateString) =>
+                                setData("month_checked", dateString)
+                            }
+                        />
+                    </div>
+                    <div className="my-2">
+                        <InputLabel
+                            htmlFor="year_checked"
+                            value="Year Checked"
+                        />
+                        <DatePicker
+                            picker="year"
+                            className="w-full mt-2"
+                            onChange={(date, dateString) =>
+                                setData("year_checked", dateString)
+                            }
+                        />
+                    </div>
+                    <div className="my-2">
+                        <InputLabel htmlFor="pic_hse_id" value="PIC HSE" />
+                        <Select
+                            showSearch
+                            optionFilterProp="children"
+                            filterOption={filterOption}
+                            style={{
+                                width: "100%",
+                                height: 42,
+                            }}
+                            options={user.map((item) => ({
+                                label: item.name,
+                                value: item.id,
+                            }))}
+                            onChange={(e) => {
+                                setData("hse_id", e);
+                            }}
+                        />
+                    </div>
+                    <div className="my-2">
+                        <InputLabel htmlFor="pic_p2k_id" value="PIC P2K" />
+                        <Select
+                            showSearch
+                            optionFilterProp="children"
+                            filterOption={filterOption}
+                            style={{
+                                width: "100%",
+                                height: 42,
+                            }}
+                            options={user.map((item) => ({
+                                label: item.name,
+                                value: item.id,
+                            }))}
+                            onChange={(e) => {
+                                setData("p2k_id", e);
+                            }}
+                        />
+                    </div>
                     {data.apar_item_condition?.map((item, index) => (
                         <div key={index}>
                             <AparItemCondition
@@ -354,6 +433,9 @@ export default function Create({ auth, user, area, aparItem }) {
     return (
         <Authenticated user={auth.user}>
             <div className="container m-auto">
+                <h2 className="text-center font-bold text-xl my-4">
+                    APAR Report Form
+                </h2>
                 <Collapse items={items} defaultActiveKey={[]} />
                 <form onSubmit={submit} encType="multipart/form-data">
                     <div className="m-auto mt-4 mb-12 text-center">

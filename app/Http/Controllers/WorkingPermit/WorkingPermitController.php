@@ -21,9 +21,8 @@ class WorkingPermitController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
         $works = WorkingPermits::with('natureOfWork', 'issuer')->orderBy('created_at', 'desc')->orderBy('created_at', 'desc')
             ->take(3)->get();
         // dd($works);

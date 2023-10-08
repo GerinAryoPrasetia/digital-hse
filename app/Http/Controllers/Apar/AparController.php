@@ -4,25 +4,44 @@ namespace App\Http\Controllers\Apar;
 
 use App\Http\Controllers\Controller;
 use App\Models\Apar\AparArea;
+use App\Models\Apar\AparCondition;
 use App\Models\Apar\AparItem;
 use App\Models\Apar\AparItemCondition;
 use App\Models\Apar\AparItemRemarks;
 use App\Models\Apar\AparReport;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use Illuminate\Support\Str;
 
 class AparController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         //
-
-        return Inertia::render('Modul/Apar/Index');
+        // dd($request->area_id);
+        // dd($query);
+        $user = auth()->user()->getAuthIdentifier();
+        $apar_report = AparReport::with('apar_area', 'checked_by', 'acknowladge_user', 'apar_condition.apar_item_condition')->where('checked_by_id', $user)->take(3)->get();
+        // dd($apar_report);
+        if ($request->has('area_id')) {
+            # code...
+            $apar_report = AparReport::with('apar_area', 'checked_by', 'acknowladge_user', 'apar_condition.apar_item_condition')
+                ->where('checked_by_id', $user)
+                ->where('area_id', $request->area_id)
+                ->take(3)
+                ->get();
+        }
+        $area = AparArea::all();
+        return Inertia::render('Modul/Apar/Index', [
+            'items' => $apar_report,
+            'area' => $area,
+        ]);
     }
 
     /**
@@ -67,11 +86,12 @@ class AparController extends Controller
                 'apar_type' => $request->apar_type,
                 'apar_jenis' => $request->apar_jenis,
                 'apar_year_of_production' => $request->apar_year_of_production,
+                'apar_report_number' => $this->generateUniqueNumberReport(),
             ]);
 
             foreach ($request->apar_item_condition as $apar_ic) {
                 if (is_array($apar_ic)) {
-                    AparItemCondition::create([
+                    $apar_item_condition = AparItemCondition::create([
                         'apar_report_id' => $apar_report->id,
                         'apar_item_id' => $apar_ic['item_id'] ?? null,
                         'checked' => $apar_ic['checked'] ?? null,
@@ -80,8 +100,21 @@ class AparController extends Controller
                         'possible_cause' => $apar_ic['possible_cause'] ?? null,
                         'tanggal_remarks' => $apar_ic['tanggal_remarks'] ?? null,
                     ]);
+
+                    AparCondition::create([
+                        'pic_area_id' => $request->checked_by_id,
+                        'apar_report_id' => $apar_report->id,
+                        'apar_item_condition_id' => $apar_item_condition->id,
+                        'verified_by_hse' => false,
+                        'verified_by_p2k' => false,
+                        'year_checked' => $request->year_checked,
+                        'month_checked' => $request->month_checked,
+                        'hse_id' => $request->hse_id,
+                        'p2k_id' => $request->p2k_id,
+                    ]);
                 }
             }
+
             DB::commit();
 
             return redirect()->route("modul")->with('success', 'APAR Report Submitted Successfully');
@@ -98,6 +131,10 @@ class AparController extends Controller
     public function show(string $id)
     {
         //
+        $apar = AparReport::with('apar_area', 'checked_by', 'acknowladge_user', 'apar_condition.apar_item_condition', 'apar_condition.apar_item_condition.apar_item', 'apar_condition.hse', 'apar_condition.p2k')->where('id', $id)->first();
+        return Inertia::render('Modul/Apar/Detail', [
+            'apar' => $apar,
+        ]);
     }
 
     /**
@@ -122,5 +159,22 @@ class AparController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function generateUniqueNumberReport()
+    {
+        // Get the current date and time
+        $currentDateTime = Carbon::now();
+
+        // Format the date and time as "HHMMDD"
+        $formattedDateTime = $currentDateTime->format('Hisd');
+
+        // Generate a random string
+        $randomString = Str::random(8); // You can adjust the length as needed
+
+        // Combine everything with the prefix "WP-"
+        $uniqueNumber = "APAR-$formattedDateTime-$randomString";
+
+        return $uniqueNumber;
     }
 }
