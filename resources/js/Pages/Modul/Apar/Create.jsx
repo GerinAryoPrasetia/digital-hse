@@ -46,20 +46,9 @@ export default function Create({ auth, user, area, aparItem }) {
         ]);
     };
 
-    // const addItemToFormDataRemarks = () => {
-    //     setData("apar_item_condition_remarks", [
-    //         ...data.apar_item_condition_remarks,
-    //         {
-    //             item_id: "",
-    //             tanggal: "",
-    //             status: "",
-    //             possible_cause: "",
-    //             action: "",
-    //         },
-    //     ]);
-    // };
     const filterOption = (input, option) =>
         (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
+
     const items = [
         {
             key: "1",
@@ -399,30 +388,6 @@ export default function Create({ auth, user, area, aparItem }) {
                 </div>
             ),
         },
-        // {
-        //     key: "3",
-        //     label: "APAR ITEM CONDITION REMARKS",
-        //     children: (
-        //         <div>
-        //             {data.apar_item_condition_remarks?.map((item, index) => (
-        //                 <div key={index}>
-        //                     <AparItemRemarks
-        //                         // key={index}
-        //                         index={index} // Pass the index to the component
-        //                         formData={data}
-        //                         setFormData={setData}
-        //                         item={aparItem}
-        //                     />
-        //                 </div>
-        //             ))}
-        //             <div className="text-center">
-        //                 <PrimaryButton onClick={addItemToFormDataRemarks}>
-        //                     Add Item
-        //                 </PrimaryButton>
-        //             </div>
-        //         </div>
-        //     ),
-        // },
     ];
 
     const submit = (e) => {

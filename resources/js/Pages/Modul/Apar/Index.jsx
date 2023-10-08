@@ -30,8 +30,8 @@ export default function Apar({ auth, apar_report, area }) {
                 preserveState: true,
             }
         );
-        console.log("filter");
     };
+
     return (
         <Authenticated user={auth.user}>
             <div className="container m-auto">
@@ -74,7 +74,7 @@ export default function Apar({ auth, apar_report, area }) {
                             No Data
                         </p>
                     ) : (
-                        <Link href={route("listApprovals")}>
+                        <Link href={route("listApar")}>
                             <div>
                                 <p className="text-center text-sm mb-4 mt-4 text-blue-600">
                                     Show More
@@ -83,6 +83,23 @@ export default function Apar({ auth, apar_report, area }) {
                         </Link>
                     )}
                 </div>
+                {/* <div>
+                    <p className="text-center font-bold">Need Your Verify</p>
+                    <ListApar items={filteredItems} />
+                    {items.length == 0 || filteredItems == 0 ? (
+                        <p className="text-center text-sm mb-4 mt-4 cursor-pointer">
+                            No Data
+                        </p>
+                    ) : (
+                        <Link href={route("listApar")}>
+                            <div>
+                                <p className="text-center text-sm mb-4 mt-4 text-blue-600">
+                                    Show More
+                                </p>
+                            </div>
+                        </Link>
+                    )}
+                </div> */}
                 {/* <div>
                     <p className="text-center font-bold">Need Your Approval</p>
                     <ListApar items={apar_report} />

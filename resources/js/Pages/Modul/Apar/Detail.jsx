@@ -1,10 +1,28 @@
+import PrimaryButton from "@/Components/PrimaryButton";
 import { formatDateToDDMMYYYY } from "@/Helper/ParseDate";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
+import { router } from "@inertiajs/react";
 import { Collapse } from "antd";
-import React from "react";
+import React, { useState } from "react";
 
 export default function Detail({ auth, apar }) {
     console.log(apar);
+
+    const verifyAparP2K = (e) => {
+        // setData({ hse_id: "", p2k_id: auth.user.id, ...data });
+        router.post(route("apar.verify"), {
+            apar_report_id: apar.id,
+            verified_by_hse: false,
+            verified_by_p2k: true,
+        });
+    };
+    const verifyAparHSE = (e) => {
+        router.post(route("apar.verify"), {
+            apar_report_id: apar.id,
+            verified_by_hse: true,
+            verified_by_p2k: false,
+        });
+    };
     const items = [
         {
             key: 1,
@@ -107,9 +125,28 @@ export default function Detail({ auth, apar }) {
                         <p className="font-semibold mr-1">PIC P2K : </p>
                         <p>{apar.apar_condition[0]?.p2k?.name}</p>
                     </div>
+                    <div className="flex">
+                        <p className="font-semibold mr-1">Verified by HSE : </p>
+                        {apar.apar_condition[0]?.verified_by_hse == 0 ? (
+                            <p className=" text-yellow-500">
+                                Waiting for verification
+                            </p>
+                        ) : (
+                            <p className="text-green-500">Verified</p>
+                        )}
+                    </div>
+                    <div className="flex">
+                        <p className="font-semibold mr-1">Verified by P2K : </p>
+                        {apar.apar_condition[0]?.verified_by_p2k == 0 ? (
+                            <p className=" text-yellow-500">
+                                Waiting for verification
+                            </p>
+                        ) : (
+                            <p className="text-green-500">Verified</p>
+                        )}
+                    </div>
                     <h3 className="font-bold text-center">Item Condition</h3>
                     {apar.apar_condition.map((item, index) => {
-                        console.log("item", item, index);
                         return (
                             <div
                                 key={index}
@@ -187,6 +224,22 @@ export default function Detail({ auth, apar }) {
                     {apar.apar_report_number}
                 </h3>
                 <Collapse items={items} />
+                {apar.apar_condition[0]?.p2k_id == auth.user.id &&
+                    apar.apar_condition[0]?.verified_by_p2k == 0 && (
+                        <div className="flex mt-4">
+                            <PrimaryButton onClick={verifyAparP2K}>
+                                Verify P2K
+                            </PrimaryButton>
+                        </div>
+                    )}
+                {apar.apar_condition[0]?.hse_id == auth.user.id &&
+                    apar.apar_condition[0]?.verified_by_hse == 0 && (
+                        <div className="mt-4 items-center flex">
+                            <PrimaryButton onClick={verifyAparHSE}>
+                                Verify HSE
+                            </PrimaryButton>
+                        </div>
+                    )}
             </div>
         </Authenticated>
     );
