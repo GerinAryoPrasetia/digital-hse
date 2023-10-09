@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             //
-            $table->uuid('company_id')->nullable();
-            $table->foreign('company_id')->references('id')->on('company')->onDelete('cascade');
+            // $table->uuid('company_id')->nullable();
+            // $table->foreign('company_id')->references('id')->on('company')->onDelete('cascade');
             $table->string('role');
             $table->string('departement');
             $table->string('position');
