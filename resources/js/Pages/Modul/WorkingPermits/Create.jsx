@@ -12,6 +12,7 @@ import Dropdown from "@/Components/Dropdown";
 import Checkbox from "@/Components/Checkbox";
 
 import { PlusOutlined, UploadOutlined } from "@ant-design/icons";
+import UserBriefForm from "./UserBriefForm";
 
 export default function WorkingPermitForm({ auth, issuer, permit, users }) {
     const getBase64 = (file) =>
@@ -325,7 +326,15 @@ export default function WorkingPermitForm({ auth, issuer, permit, users }) {
         supervisorId: "",
         safetyOfficerId: "",
         attachments: [],
+        userBrief: [],
     });
+
+    const addItemToFormData = () => {
+        setData("userBrief", [
+            ...data.userBrief,
+            { name: "", companyName: "", functionName: "" },
+        ]);
+    };
 
     const filterOption = (input, option) =>
         (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
@@ -608,6 +617,20 @@ export default function WorkingPermitForm({ auth, issuer, permit, users }) {
                             }
                         />
                     </div>
+                    {data.userBrief?.map((item, index) => (
+                        <div key={index}>
+                            <UserBriefForm
+                                index={index} // Pass the index to the component
+                                formData={data}
+                                setFormData={setData}
+                            />
+                        </div>
+                    ))}
+                    <div className="text-center">
+                        <PrimaryButton onClick={addItemToFormData}>
+                            Add Item
+                        </PrimaryButton>
+                    </div>
                 </div>
             ),
         },
@@ -801,12 +824,12 @@ export default function WorkingPermitForm({ auth, issuer, permit, users }) {
                 <h2 className="text-center font-bold text-xl my-4">
                     Working Permit Form
                 </h2>
+                <Collapse
+                    items={items}
+                    defaultActiveKey={["1"]}
+                    onChange={onChange}
+                />
                 <form onSubmit={submit} encType="multipart/form-data">
-                    <Collapse
-                        items={items}
-                        defaultActiveKey={["1"]}
-                        onChange={onChange}
-                    />
                     <div className="m-auto mt-4 mb-12 text-center">
                         <PrimaryButton disabled={processing}>
                             Submit

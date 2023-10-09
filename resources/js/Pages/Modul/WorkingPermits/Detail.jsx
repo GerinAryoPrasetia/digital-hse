@@ -1,7 +1,7 @@
 import formatDateToDDMMYYYYHHMM from "@/Helper/ParseDate";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 import { useForm } from "@inertiajs/react";
-import { Collapse, Image, Steps } from "antd";
+import { Collapse, Image, Steps, Table } from "antd";
 import React, { useEffect, useState } from "react";
 
 export default function Detail({ auth, permit, flash }) {
@@ -23,6 +23,45 @@ export default function Detail({ auth, permit, flash }) {
     const reject = () => {
         post(route("working-permits.reject", permit.id));
     };
+
+    // const dataSource = [
+    //     {
+    //         key: "1",
+    //         name: "Mike",
+    //         company: 32,
+    //         function: "10 Downing Street",
+    //     },
+    //     {
+    //         key: "2",
+    //         name: "John",
+    //         age: 42,
+    //         address: "10 Downing Street",
+    //     },
+    // ];
+    const dataSourceBrief = permit.user_brief?.map((item, index) => ({
+        key: index,
+        name: item.name,
+        company: item.company_name,
+        function: item.function_name,
+    }));
+
+    const columns = [
+        {
+            title: "Name",
+            dataIndex: "name",
+            key: "name",
+        },
+        {
+            title: "Company Name",
+            dataIndex: "company",
+            key: "company",
+        },
+        {
+            title: "Function",
+            dataIndex: "function",
+            key: "function",
+        },
+    ];
 
     const items = [
         {
@@ -89,9 +128,9 @@ export default function Detail({ auth, permit, flash }) {
                             <span className="font-bold">Work Site : </span>
                             {permit.work_site}
                         </p>
-                        <p>
+                        {/* <p>
                             <span className="font-bold">Work Area : </span>
-                        </p>
+                        </p> */}
                         {/* TODO: add WOrk area */}
                         {/* {permit.permit_to_work.map((item, index) => (
                             <p>{item.data}</p>
@@ -116,6 +155,14 @@ export default function Detail({ auth, permit, flash }) {
                             </span>
                         </p>
                         <p>{permit.brief_of_work}</p>
+                    </div>
+                    <div>
+                        <p className="font-bold">User Needed to Brief</p>
+                        <Table
+                            dataSource={dataSourceBrief}
+                            columns={columns}
+                            pagination={false}
+                        />
                     </div>
                 </div>
             ),
@@ -329,7 +376,7 @@ export default function Detail({ auth, permit, flash }) {
                         <div className="flex justify-evenly my-4">
                             <button
                                 className={
-                                    `bg-green-500 text-white px-4 py-2 rounded-lg ` +
+                                    `bg-red-500 text-white px-4 py-2 rounded-lg ` +
                                     (permit.is_rejected == 1 ? "hidden" : "")
                                 }
                                 onClick={reject}

@@ -17,9 +17,72 @@ export default function Modul({ auth }) {
                         <p className="text-center font-bold">APAR</p>
                     </div>
                 </Link>
-                <div className="m-auto p-4 bg-gray-100 my-4 rounded-lg mx-6">
-                    <p className="text-center font-bold">Incidents</p>
-                </div>
+                <Link href={route("coming-soon")}>
+                    <div className="m-auto p-4 bg-gray-100 my-4 rounded-lg mx-6">
+                        <p className="text-center font-bold">Incidents</p>
+                    </div>
+                </Link>
+                <Link href={route("coming-soon")}>
+                    <div className="m-auto p-4 bg-gray-100 my-4 rounded-lg mx-6">
+                        <p className="text-center font-bold">JSA</p>
+                    </div>
+                </Link>
+                {/* COMING SOON MODUL */}
+                <Link href={route("coming-soon")}>
+                    <div className="m-auto p-4 bg-gray-100 my-4 rounded-lg mx-6">
+                        <p className="text-center font-bold">Laporan UPTD</p>
+                    </div>
+                </Link>
+                <Link href={route("coming-soon")}>
+                    <div className="m-auto p-4 bg-gray-100 my-4 rounded-lg mx-6">
+                        <p className="text-center font-bold">Safety patrol</p>
+                    </div>
+                </Link>
+                <Link href={route("coming-soon")}>
+                    <div className="m-auto p-4 bg-gray-100 my-4 rounded-lg mx-6">
+                        <p className="text-center font-bold">Safety talk</p>
+                    </div>
+                </Link>
+                <Link href={route("coming-soon")}>
+                    <div className="m-auto p-4 bg-gray-100 my-4 rounded-lg mx-6">
+                        <p className="text-center font-bold">Hiradc</p>
+                    </div>
+                </Link>
+                <Link href={route("coming-soon")}>
+                    <div className="m-auto p-4 bg-gray-100 my-4 rounded-lg mx-6">
+                        <p className="text-center font-bold">Legal HSE</p>
+                    </div>
+                </Link>
+                <Link href={route("coming-soon")}>
+                    <div className="m-auto p-4 bg-gray-100 my-4 rounded-lg mx-6">
+                        <p className="text-center font-bold">Laporan Dinkes</p>
+                    </div>
+                </Link>
+                <Link href={route("coming-soon")}>
+                    <div className="m-auto p-4 bg-gray-100 my-4 rounded-lg mx-6">
+                        <p className="text-center font-bold">CSR</p>
+                    </div>
+                </Link>
+                <Link href={route("coming-soon")}>
+                    <div className="m-auto p-4 bg-gray-100 my-4 rounded-lg mx-6">
+                        <p className="text-center font-bold">Safety Riding</p>
+                    </div>
+                </Link>
+                <Link href={route("coming-soon")}>
+                    <div className="m-auto p-4 bg-gray-100 my-4 rounded-lg mx-6">
+                        <p className="text-center font-bold">Safety Driving</p>
+                    </div>
+                </Link>
+                <Link href={route("coming-soon")}>
+                    <div className="m-auto p-4 bg-gray-100 my-4 rounded-lg mx-6">
+                        <p className="text-center font-bold">Evakuasi drill</p>
+                    </div>
+                </Link>
+                <Link href={route("coming-soon")}>
+                    <div className="m-auto p-4 bg-gray-100 my-4 rounded-lg mx-6">
+                        <p className="text-center font-bold">APD control</p>
+                    </div>
+                </Link>
             </div>
         </AuthenticatedLayout>
     );

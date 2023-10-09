@@ -1,4 +1,5 @@
 import formatDateToDDMMYYYYHHMM from "@/Helper/ParseDate";
+import Authenticated from "@/Layouts/AuthenticatedLayout";
 import { Link } from "@inertiajs/react";
 import React from "react";
 

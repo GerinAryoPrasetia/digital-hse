@@ -29,33 +29,20 @@ class AparController extends Controller
         $user = auth()->user()->getAuthIdentifier();
         $apar_report = AparReport::with('apar_area', 'checked_by', 'acknowladge_user', 'apar_condition.apar_item_condition')->where('checked_by_id', $user)
             ->orderBy('created_at', 'desc')
-            ->take(6)
+            ->take(3)
             ->get();
-
-        // $apar_report_pic = AparReport::with('apar_area', 'checked_by', 'acknowladge_user', 'apar_condition.apar_item_condition')
-        //     ->where('apar_condition.hse', $user)->orWhere('apar_condition.p2k', $user)
-        //     ->orderBy('created_at', 'desc')
-        //     ->take(3)
-        //     ->get();
+        // dd($apar_report);
         if ($request->has('area_id')) {
             # code...
             $apar_report = AparReport::with('apar_area', 'checked_by', 'acknowladge_user', 'apar_condition.apar_item_condition')
                 ->where('checked_by_id', $user)
                 ->where('area_id', $request->area_id)
-                ->take(6)
+                ->take(3)
                 ->get();
-            // $apar_report_pic = AparReport::with('apar_area', 'checked_by', 'acknowladge_user', 'apar_condition.apar_item_condition')
-            //     ->where('apar_condition.hse', $user)->orWhere('apar_condition.p2k', $user)
-            //     ->where('area_id', $request->area_id)
-            //     ->orderBy('created_at', 'desc')
-            //     ->take(3)
-            //     ->get();
         }
-
         $area = AparArea::all();
         return Inertia::render('Modul/Apar/Index', [
             'items' => $apar_report,
-            // 'items_pic' => $apar_report_pic,
             'area' => $area,
         ]);
     }
@@ -177,32 +164,26 @@ class AparController extends Controller
         //
     }
 
-    public function verify(Request $request)
+    public function verified(Request $request)
     {
         // dd($request->all());
+        try {
+            //code...
+            DB::beginTransaction();
 
-        if ($request->has('apar_report_id')) {
-            $apar_report = AparCondition::where('apar_report_id', $request->apar_report_id);
+            $apar_condition = AparCondition::where('id', $request->id)->first();
+            $apar_condition->verified_by_hse = $request->verified_by_hse;
+            $apar_condition->verified_by_p2k = $request->verified_by_p2k;
+            $apar_condition->save();
 
-            if ($apar_report) {
-                if ($request->verified_by_hse == true) {
-                    $apar_report->update([
-                        'verified_by_hse' => $request->verified_by_hse,
-                    ]);
-                } else if ($request->verified_by_p2k == true) {
-                    $apar_report->update([
-                        'verified_by_p2k' => $request->verified_by_p2k,
-                    ]);
-                }
-            } else {
-                dd($request->all());
+            DB::commit();
 
-                // Handle the case when the record is not found
-                // You might want to return an error response or perform other actions.
-            }
+            return redirect()->route("modul")->with('success', 'APAR Report Verified Successfully');
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollBack();
+            return response()->json(['error' => $th->getMessage()]);
         }
-
-        return redirect()->route("modul")->with('success', 'APAR Report Submitted Successfully');
     }
 
     public function generateUniqueNumberReport()
@@ -222,46 +203,16 @@ class AparController extends Controller
         return $uniqueNumber;
     }
 
-    public function listApar(Request $request)
+    public function listApar()
     {
+        // dd(auth()->user()->getAuthIdentifier());
         $user = auth()->user()->getAuthIdentifier();
         $apar_report = AparReport::with('apar_area', 'checked_by', 'acknowladge_user', 'apar_condition.apar_item_condition')->where('checked_by_id', $user)
             ->orderBy('created_at', 'desc')
             ->get();
-        if ($request->has('area_id')) {
-            # code...
-            $apar_report = AparReport::with('apar_area', 'checked_by', 'acknowladge_user', 'apar_condition.apar_item_condition')
-                ->where('checked_by_id', $user)
-                ->where('area_id', $request->area_id)
-                ->get();
-        }
-        $area = AparArea::all();
+
         return Inertia::render('Modul/Apar/AllApar', [
             'items' => $apar_report,
-            'area' => $area,
-        ]);
-    }
-
-    public function listAparPic(Request $request)
-    {
-        $user = auth()->user()->getAuthIdentifier();
-        $apar_report = AparReport::with('apar_area', 'checked_by', 'acknowladge_user', 'apar_condition.apar_item_condition')
-            ->where('apar_condition.hse_id', $user)
-            ->orWhere('apar_condition.p2k_id', $user)
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        if ($request->has('area_id')) {
-            # code...
-            $apar_report = AparReport::with('apar_area', 'checked_by', 'acknowladge_user', 'apar_condition.apar_item_condition')
-                ->where('apar_condition.hse_id', $user)->orWhere('apar_condition.p2k_id', $user)
-                ->where('area_id', $request->area_id)
-                ->get();
-        }
-        $area = AparArea::all();
-        return Inertia::render('Modul/Apar/AllPicApar', [
-            'items' => $apar_report,
-            'area' => $area,
         ]);
     }
 }

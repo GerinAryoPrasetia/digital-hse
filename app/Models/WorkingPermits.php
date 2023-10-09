@@ -7,6 +7,7 @@ use App\Models\WP\SafetyEquipment;
 use App\Models\WP\SafetyPersonal;
 use App\Models\WP\SafetyProcedure;
 use App\Models\WP\WpAttachments;
+use App\Models\WP\WpUserBrief;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -42,6 +43,7 @@ class WorkingPermits extends Model
         'status',
         'created_at',
         'updated_at',
+        'company_name'
     ];
 
     public function issuer()
@@ -82,5 +84,10 @@ class WorkingPermits extends Model
     public function attachments()
     {
         return $this->hasMany(WpAttachments::class, 'working_permit_id');
+    }
+
+    public function userBrief()
+    {
+        return $this->hasMany(WpUserBrief::class, 'wp_id');
     }
 }

@@ -10,6 +10,7 @@ use App\Models\WP\SafetyPersonal;
 use App\Models\WP\SafetyProcedure;
 use App\Models\WP\WorkArea;
 use App\Models\WP\WpAttachments;
+use App\Models\WP\WpUserBrief;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -95,6 +96,7 @@ class WorkingPermitController extends Controller
                 'second_approved_at' => null,
                 'is_rejected' => false,
                 'status' => 'pending',
+                'company_name' => $request->companyName,
             ]);
 
             foreach ($request->file('attachments') as $attData) {
@@ -150,6 +152,15 @@ class WorkingPermitController extends Controller
                 ]);
             }
 
+            foreach ($request->userBrief as $value) {
+                WpUserBrief::create([
+                    'wp_id' => $working_permits->id,
+                    'name' => $value['name'],
+                    'company_name' => $value['companyName'],
+                    'function_name' => $value['functionName'],
+                ]);
+            }
+
             DB::commit();
 
             return redirect()->route("modul")->with('success', 'Working Permit Submitted Successfully');
@@ -166,7 +177,7 @@ class WorkingPermitController extends Controller
     public function show(string $id)
     {
         //
-        $permit = WorkingPermits::with('natureOfWork', 'safetyProcedure', 'safetyPersonal', 'safetyEquipment', 'issuer', 'supervisor', 'officer', 'attachments')->where('id', $id)->first();
+        $permit = WorkingPermits::with('natureOfWork', 'safetyProcedure', 'safetyPersonal', 'safetyEquipment', 'issuer', 'supervisor', 'officer', 'attachments', 'userBrief')->where('id', $id)->first();
         return Inertia::render('Modul/WorkingPermits/Detail', [
             'permit' => $permit,
         ]);
