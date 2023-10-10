@@ -49,8 +49,17 @@ class WorkingPermitController extends Controller
     public function create()
     {
         //
-        $supervisor_name = DB::table('users')->where('id', auth()->user()->supervisor_id)->first()->name;
-        $issuer = ['name' => $supervisor_name, 'id' => auth()->user()->supervisor_id];
+        $supervisor = DB::table('users')->where('id', auth()->user()->supervisor_id)->first();
+
+        if ($supervisor) {
+            $supervisor_name = $supervisor->name;
+            $issuer = ['name' => $supervisor_name, 'id' => auth()->user()->supervisor_id];
+        } else {
+            // Handle the case where the supervisor user does not exist.
+            // You might want to set a default value or handle it in another way.
+            $issuer = ['name' => 'Default Supervisor', 'id' => null];
+        }
+
         $users = DB::table('users')->get();
 
         $form_number = $this->generateUniqueNumber();
