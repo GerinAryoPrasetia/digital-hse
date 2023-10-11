@@ -36,7 +36,47 @@ export default function WorkingPermitForm({ auth, issuer, permit, users }) {
         { id: "Near/over water", label: "Near/over water" },
         { id: "Isolated area", label: "Isolated area" },
         { id: "Elevated area", label: "Elevated area" },
-        { id: "Other area", label: "Other area" },
+        {
+            id: "Other area",
+            label: "Other area",
+            checked: false,
+            disabled: false,
+        },
+    ];
+
+    const checkBoxPermitToWork = [
+        {
+            id: "Hot Work",
+            label: "Hot Work",
+        },
+        {
+            id: "Cold work permit",
+            label: "Cold work permit",
+        },
+        {
+            id: "Work at height permit",
+            label: "Work at height permit",
+        },
+        {
+            id: "Burning permit",
+            label: "Burning permit",
+        },
+        {
+            id: "Confined space entry permit",
+            label: "Confined space entry permit",
+        },
+        {
+            id: "Electrical work permit",
+            label: "Electrical work permit",
+        },
+        {
+            id: "New work",
+            label: "New work",
+        },
+        {
+            id: "Continuation",
+            label: "Continuation",
+        },
     ];
 
     const checkboxDataNatureofWork = [
@@ -189,6 +229,27 @@ export default function WorkingPermitForm({ auth, issuer, permit, users }) {
         setCheckedItemsWorkArea(updatedCheckedItems);
         setData("workArea", updatedCheckedItems);
     };
+    const handleCheckboxChangePermitWork = (event) => {
+        const { id, checked } = event.target;
+
+        // Clone the current state array to avoid mutating it directly
+        const updatedCheckedItems = [...checkedItemsWorkArea];
+
+        if (checked) {
+            // If the checkbox is checked, add the ID to the array
+            updatedCheckedItems.push(id);
+        } else {
+            // If the checkbox is unchecked, remove the ID from the array
+            const index = updatedCheckedItems.indexOf(id);
+            if (index !== -1) {
+                updatedCheckedItems.splice(index, 1);
+            }
+        }
+
+        // Update the state with the new array
+        setCheckedItemsWorkArea(updatedCheckedItems);
+        setData("permitToWork", updatedCheckedItems);
+    };
 
     const handleCheckboxChangeNatureofWork = (event) => {
         const { id, checked } = event.target;
@@ -308,7 +369,7 @@ export default function WorkingPermitForm({ auth, issuer, permit, users }) {
     };
 
     const { data, setData, post, processing, errors, reset } = useForm({
-        permitToWork: "",
+        permitToWork: [],
         workSite: "",
         workArea: [],
         issuerID: auth.user?.reference_id,
@@ -527,49 +588,27 @@ export default function WorkingPermitForm({ auth, issuer, permit, users }) {
                             htmlFor="permitToWork"
                             value="Permit to Work"
                         />
-                        <Select
-                            style={{
-                                width: "100%",
-                                height: 42,
-                            }}
-                            options={[
-                                {
-                                    label: "Hot Work",
-                                    value: "Hot Work",
-                                },
-                                {
-                                    label: "Cold work permit",
-                                    value: "Cold work permit",
-                                },
-                                {
-                                    label: "Work at height permit",
-                                    value: "Work at height permit",
-                                },
-                                {
-                                    label: "Burning permit",
-                                    value: "Burning permit",
-                                },
-                                {
-                                    label: "Confined space entry permit",
-                                    value: "Confined space entry permit",
-                                },
-                                {
-                                    label: "Electrical work permit",
-                                    value: "Electrical work permit",
-                                },
-                                {
-                                    label: "New work",
-                                    value: "New work",
-                                },
-                                {
-                                    label: "Continuation",
-                                    value: "Continuation",
-                                },
-                            ]}
-                            onChange={(e) => {
-                                setData("permitToWork", e);
-                            }}
-                        />
+                        {checkBoxPermitToWork.map((item) => (
+                            <div className="block mt-4">
+                                <label className="flex items-center">
+                                    <Checkbox
+                                        name="remember"
+                                        key={item.id}
+                                        id={item.id}
+                                        // // checked={data.remember}
+                                        checked={checkedItemsWorkArea.includes(
+                                            item.id
+                                        )}
+                                        onChange={
+                                            handleCheckboxChangePermitWork
+                                        }
+                                    />
+                                    <span className="ml-2 text-sm text-gray-600">
+                                        {item.label}
+                                    </span>
+                                </label>
+                            </div>
+                        ))}
                     </div>
                     <div>
                         <InputLabel htmlFor="workSite" value="Work Site" />
@@ -597,7 +636,6 @@ export default function WorkingPermitForm({ auth, issuer, permit, users }) {
                                         key={item.id}
                                         id={item.id}
                                         // // checked={data.remember}
-
                                         checked={checkedItemsWorkArea.includes(
                                             item.id
                                         )}

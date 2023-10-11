@@ -18,7 +18,8 @@ class WpUserBrief extends Model
         'wp_id',
         'name',
         'company_name',
-        'function_name'
+        'function_name',
+        'no_telp'
     ];
 
     public function workingPermit()
