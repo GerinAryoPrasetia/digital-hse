@@ -37,6 +37,17 @@ export default function UserBriefForm({ index, formData, setFormData }) {
         }));
     };
 
+    const handleChangeNoTelp = (e) => {
+        // Update the 'checked' field in the specific item
+        userBriefData.noTelp = e.target.value;
+
+        // Update the form data with the modified item
+        setFormData((prevData) => ({
+            ...prevData,
+            userBrief: [...prevData.userBrief],
+        }));
+    };
+
     return (
         <div className="my-4">
             <p className="font-bold">User {index + 1}</p>
@@ -82,6 +93,21 @@ export default function UserBriefForm({ index, formData, setFormData }) {
                     autoComplete="function-name"
                     value={userBriefData.functionName}
                     onChange={handleChangeFunction}
+                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                />
+            </div>
+            <div>
+                <InputLabel
+                    className="block text-sm font-medium text-gray-700"
+                    value="No Telp"
+                />
+                <TextInput
+                    type="text"
+                    name="function"
+                    id="function"
+                    autoComplete="function-name"
+                    value={userBriefData.noTelp}
+                    onChange={handleChangeNoTelp}
                     className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                 />
             </div>

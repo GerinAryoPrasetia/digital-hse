@@ -18,9 +18,9 @@ export default forwardRef(function TextInput(
             disabled={props.disabled}
             type={type}
             className={
-                "border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm " +
+                "border-gray-300 focus:border-black focus:ring-black rounded-md shadow-sm " +
                 className +
-                (props.disabled ? " bg-gray-300" : "")
+                (props.disabled ? " bg-gray-200" : "")
             }
             ref={input}
         />

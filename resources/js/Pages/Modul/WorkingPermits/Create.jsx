@@ -2,7 +2,7 @@ import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 import React, { useEffect, useState } from "react";
-import { Collapse, Modal, Select, Upload } from "antd";
+import { Button, Collapse, Modal, Select, Steps, Upload, theme } from "antd";
 import { useForm } from "@inertiajs/react";
 import TextInput from "@/Components/TextInput";
 import InputError from "@/Components/InputError";
@@ -13,6 +13,7 @@ import Checkbox from "@/Components/Checkbox";
 
 import { PlusOutlined, UploadOutlined } from "@ant-design/icons";
 import UserBriefForm from "./UserBriefForm";
+import SecondaryButton from "@/Components/SecondaryButton";
 
 export default function WorkingPermitForm({ auth, issuer, permit, users }) {
     const getBase64 = (file) =>
@@ -35,7 +36,47 @@ export default function WorkingPermitForm({ auth, issuer, permit, users }) {
         { id: "Near/over water", label: "Near/over water" },
         { id: "Isolated area", label: "Isolated area" },
         { id: "Elevated area", label: "Elevated area" },
-        { id: "Other area", label: "Other area" },
+        {
+            id: "Other area",
+            label: "Other area",
+            checked: false,
+            disabled: false,
+        },
+    ];
+
+    const checkBoxPermitToWork = [
+        {
+            id: "Hot Work",
+            label: "Hot Work",
+        },
+        {
+            id: "Cold work permit",
+            label: "Cold work permit",
+        },
+        {
+            id: "Work at height permit",
+            label: "Work at height permit",
+        },
+        {
+            id: "Burning permit",
+            label: "Burning permit",
+        },
+        {
+            id: "Confined space entry permit",
+            label: "Confined space entry permit",
+        },
+        {
+            id: "Electrical work permit",
+            label: "Electrical work permit",
+        },
+        {
+            id: "New work",
+            label: "New work",
+        },
+        {
+            id: "Continuation",
+            label: "Continuation",
+        },
     ];
 
     const checkboxDataNatureofWork = [
@@ -188,6 +229,27 @@ export default function WorkingPermitForm({ auth, issuer, permit, users }) {
         setCheckedItemsWorkArea(updatedCheckedItems);
         setData("workArea", updatedCheckedItems);
     };
+    const handleCheckboxChangePermitWork = (event) => {
+        const { id, checked } = event.target;
+
+        // Clone the current state array to avoid mutating it directly
+        const updatedCheckedItems = [...checkedItemsWorkArea];
+
+        if (checked) {
+            // If the checkbox is checked, add the ID to the array
+            updatedCheckedItems.push(id);
+        } else {
+            // If the checkbox is unchecked, remove the ID from the array
+            const index = updatedCheckedItems.indexOf(id);
+            if (index !== -1) {
+                updatedCheckedItems.splice(index, 1);
+            }
+        }
+
+        // Update the state with the new array
+        setCheckedItemsWorkArea(updatedCheckedItems);
+        setData("permitToWork", updatedCheckedItems);
+    };
 
     const handleCheckboxChangeNatureofWork = (event) => {
         const { id, checked } = event.target;
@@ -307,14 +369,14 @@ export default function WorkingPermitForm({ auth, issuer, permit, users }) {
     };
 
     const { data, setData, post, processing, errors, reset } = useForm({
-        permitToWork: "",
+        permitToWork: [],
         workSite: "",
         workArea: [],
-        issuerID: auth.user.reference_id,
-        issuerName: auth.user.name,
-        issuerFunction: auth.user.departement,
-        issuerSupervisor: issuer.name,
-        issuerDepartement: auth.user.departement,
+        issuerID: auth.user?.reference_id,
+        issuerName: auth.user?.name,
+        issuerFunction: auth.user?.departement,
+        issuerSupervisor: issuer?.name,
+        issuerDepartement: auth.user?.departement,
         companyName: "",
         equipmentToWorkOn: "",
         permitNumber: permit.form_number,
@@ -341,10 +403,50 @@ export default function WorkingPermitForm({ auth, issuer, permit, users }) {
 
     const items = [
         {
-            key: "1",
-            label: "Requestor Information",
+            key: "5",
+            label: "Attachments",
             children: (
-                <div>
+                <div className="my-4 mx-5">
+                    <Upload
+                        beforeUpload={() => false}
+                        listType="picture-card"
+                        fileList={fileList}
+                        onPreview={handlePreview}
+                        onChange={handleChangeImage}
+                    >
+                        {fileList.length >= 999 ? null : uploadButton}
+                    </Upload>
+                    <Modal
+                        open={previewOpen}
+                        title={previewTitle}
+                        footer={null}
+                        onCancel={handleCancel}
+                    >
+                        <img
+                            alt="example"
+                            style={{
+                                width: "100%",
+                            }}
+                            src={previewImage}
+                        />
+                    </Modal>
+                </div>
+            ),
+        },
+    ];
+    const onChange = (key) => {
+        // console.log(key);
+    };
+    const submit = (e) => {
+        e.preventDefault();
+        post(route("working-permits.store"));
+    };
+
+    const steps = [
+        {
+            title: "Requestor Information",
+            content: (
+                <div className="mx-5 my-4 text-left">
                     <div>
                         <InputLabel
                             htmlFor="issuerID"
@@ -459,10 +561,9 @@ export default function WorkingPermitForm({ auth, issuer, permit, users }) {
             ),
         },
         {
-            key: "2",
-            label: "Working Permit Detail",
-            children: (
-                <div>
+            title: "Working Permit Detail",
+            content: (
+                <div className="mx-5 my-4 text-left">
                     <div>
                         <InputLabel
                             htmlFor="permitNumber"
@@ -487,49 +588,27 @@ export default function WorkingPermitForm({ auth, issuer, permit, users }) {
                             htmlFor="permitToWork"
                             value="Permit to Work"
                         />
-                        <Select
-                            style={{
-                                width: "100%",
-                                height: 42,
-                            }}
-                            options={[
-                                {
-                                    label: "Hot Work",
-                                    value: "Hot Work",
-                                },
-                                {
-                                    label: "Cold work permit",
-                                    value: "Cold work permit",
-                                },
-                                {
-                                    label: "Work at height permit",
-                                    value: "Work at height permit",
-                                },
-                                {
-                                    label: "Burning permit",
-                                    value: "Burning permit",
-                                },
-                                {
-                                    label: "Confined space entry permit",
-                                    value: "Confined space entry permit",
-                                },
-                                {
-                                    label: "Electrical work permit",
-                                    value: "Electrical work permit",
-                                },
-                                {
-                                    label: "New work",
-                                    value: "New work",
-                                },
-                                {
-                                    label: "Continuation",
-                                    value: "Continuation",
-                                },
-                            ]}
-                            onChange={(e) => {
-                                setData("permitToWork", e);
-                            }}
-                        />
+                        {checkBoxPermitToWork.map((item) => (
+                            <div className="block mt-4">
+                                <label className="flex items-center">
+                                    <Checkbox
+                                        name="remember"
+                                        key={item.id}
+                                        id={item.id}
+                                        // // checked={data.remember}
+                                        checked={checkedItemsWorkArea.includes(
+                                            item.id
+                                        )}
+                                        onChange={
+                                            handleCheckboxChangePermitWork
+                                        }
+                                    />
+                                    <span className="ml-2 text-sm text-gray-600">
+                                        {item.label}
+                                    </span>
+                                </label>
+                            </div>
+                        ))}
                     </div>
                     <div>
                         <InputLabel htmlFor="workSite" value="Work Site" />
@@ -557,7 +636,6 @@ export default function WorkingPermitForm({ auth, issuer, permit, users }) {
                                         key={item.id}
                                         id={item.id}
                                         // // checked={data.remember}
-
                                         checked={checkedItemsWorkArea.includes(
                                             item.id
                                         )}
@@ -617,6 +695,11 @@ export default function WorkingPermitForm({ auth, issuer, permit, users }) {
                             }
                         />
                     </div>
+                    <InputLabel
+                        htmlFor="briefDescriptionOfWork"
+                        value="Person need to brief of the work"
+                        className="mt-2"
+                    />
                     {data.userBrief?.map((item, index) => (
                         <div key={index}>
                             <UserBriefForm
@@ -626,19 +709,18 @@ export default function WorkingPermitForm({ auth, issuer, permit, users }) {
                             />
                         </div>
                     ))}
-                    <div className="text-center">
-                        <PrimaryButton onClick={addItemToFormData}>
-                            Add Item
+                    <div>
+                        <PrimaryButton onClick={addItemToFormData} className="">
+                            Add Person
                         </PrimaryButton>
                     </div>
                 </div>
             ),
         },
         {
-            key: "3",
-            label: "Safety Precautions Required For The Work",
-            children: (
-                <div>
+            title: "Safety Precautions Required For The Work",
+            content: (
+                <div className="mx-5 my-4">
                     <div className="mt-4">
                         <InputLabel
                             htmlFor="safetyPersonal"
@@ -727,10 +809,9 @@ export default function WorkingPermitForm({ auth, issuer, permit, users }) {
             ),
         },
         {
-            key: "4",
-            label: "Requestor Aggereement",
-            children: (
-                <div>
+            title: "Requestor Aggereement",
+            content: (
+                <div className="mx-5 my-4">
                     <div>
                         <InputLabel
                             className="mb-4"
@@ -780,10 +861,9 @@ export default function WorkingPermitForm({ auth, issuer, permit, users }) {
             ),
         },
         {
-            key: "5",
-            label: "Attachments",
-            children: (
-                <div>
+            title: "Attachments",
+            content: (
+                <div className="my-4 mx-5">
                     <Upload
                         beforeUpload={() => false}
                         listType="picture-card"
@@ -811,16 +891,31 @@ export default function WorkingPermitForm({ auth, issuer, permit, users }) {
             ),
         },
     ];
-    const onChange = (key) => {
-        // console.log(key);
+
+    const { token } = theme.useToken();
+    const [current, setCurrent] = useState(0);
+    const next = () => {
+        setCurrent(current + 1);
     };
-    const submit = (e) => {
-        e.preventDefault();
-        post(route("working-permits.store"));
+    const prev = () => {
+        setCurrent(current - 1);
+    };
+    const items2 = steps.map((item) => ({
+        key: item.title,
+        title: item.title,
+    }));
+    const contentStyle = {
+        // lineHeight: "260px",
+        // textAlign: "center",
+        color: token.colorTextTertiary,
+        backgroundColor: token.colorFillAlter,
+        borderRadius: token.borderRadiusLG,
+        border: `1px dashed ${token.colorBorder}`,
+        marginTop: 16,
     };
     return (
         <Authenticated user={auth.user}>
-            <div className="container m-auto">
+            {/* <div className="container m-auto">
                 <h2 className="text-center font-bold text-xl my-4">
                     Working Permit Form
                 </h2>
@@ -836,6 +931,45 @@ export default function WorkingPermitForm({ auth, issuer, permit, users }) {
                         </PrimaryButton>
                     </div>
                 </form>
+            </div> */}
+            <Steps current={current} items={items2} className="mx-5 mt-4" />
+            <div style={contentStyle} className="mx-5">
+                {steps[current].content}
+            </div>
+            <div
+                style={{
+                    marginTop: 24,
+                    marginBottom: 24,
+                }}
+                className="flex justify-end mx-5"
+            >
+                {current > 0 && (
+                    <SecondaryButton
+                        style={{
+                            margin: "0 8px",
+                        }}
+                        onClick={() => prev()}
+                    >
+                        Previous
+                    </SecondaryButton>
+                )}
+                {current < steps.length - 1 && (
+                    <PrimaryButton type="primary" onClick={() => next()}>
+                        Next
+                    </PrimaryButton>
+                )}
+                {current === steps.length - 1 && (
+                    <form onSubmit={submit} encType="multipart/form-data">
+                        <PrimaryButton
+                            type="primary"
+                            onClick={() =>
+                                message.success("Processing complete!")
+                            }
+                        >
+                            Done
+                        </PrimaryButton>
+                    </form>
+                )}
             </div>
         </Authenticated>
     );

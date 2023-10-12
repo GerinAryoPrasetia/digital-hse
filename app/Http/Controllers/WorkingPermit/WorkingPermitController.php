@@ -5,6 +5,7 @@ namespace App\Http\Controllers\WorkingPermit;
 use App\Http\Controllers\Controller;
 use App\Models\WorkingPermits;
 use App\Models\WP\NatureOfWork;
+use App\Models\WP\PermitToWork;
 use App\Models\WP\SafetyEquipment;
 use App\Models\WP\SafetyPersonal;
 use App\Models\WP\SafetyProcedure;
@@ -49,8 +50,17 @@ class WorkingPermitController extends Controller
     public function create()
     {
         //
-        $supervisor_name = DB::table('users')->where('id', auth()->user()->supervisor_id)->first()->name;
-        $issuer = ['name' => $supervisor_name, 'id' => auth()->user()->supervisor_id];
+        $supervisor = DB::table('users')->where('id', auth()->user()->supervisor_id)->first();
+
+        if ($supervisor) {
+            $supervisor_name = $supervisor->name;
+            $issuer = ['name' => $supervisor_name, 'id' => auth()->user()->supervisor_id];
+        } else {
+            // Handle the case where the supervisor user does not exist.
+            // You might want to set a default value or handle it in another way.
+            $issuer = ['name' => 'Default Supervisor', 'id' => null];
+        }
+
         $users = DB::table('users')->get();
 
         $form_number = $this->generateUniqueNumber();
@@ -152,12 +162,20 @@ class WorkingPermitController extends Controller
                 ]);
             }
 
+            foreach ($request->permitToWork as $value) {
+                PermitToWork::create([
+                    'working_permit_id' => $working_permits->id,
+                    'data' => $value,
+                ]);
+            }
+
             foreach ($request->userBrief as $value) {
                 WpUserBrief::create([
                     'wp_id' => $working_permits->id,
                     'name' => $value['name'],
                     'company_name' => $value['companyName'],
                     'function_name' => $value['functionName'],
+                    'no_telp' => $value['noTelp'],
                 ]);
             }
 
@@ -177,7 +195,7 @@ class WorkingPermitController extends Controller
     public function show(string $id)
     {
         //
-        $permit = WorkingPermits::with('natureOfWork', 'safetyProcedure', 'safetyPersonal', 'safetyEquipment', 'issuer', 'supervisor', 'officer', 'attachments', 'userBrief')->where('id', $id)->first();
+        $permit = WorkingPermits::with('natureOfWork', 'safetyProcedure', 'permitToWork', 'safetyPersonal', 'safetyEquipment', 'issuer', 'supervisor', 'officer', 'attachments', 'userBrief')->where('id', $id)->first();
         return Inertia::render('Modul/WorkingPermits/Detail', [
             'permit' => $permit,
         ]);
@@ -277,7 +295,7 @@ class WorkingPermitController extends Controller
         return redirect()->route('working-permits.show', $id)->with('success', 'Working Permit Approved Successfully');
     }
 
-    public function reject(string $id)
+    public function reject(Request $request, string $id)
     {
         $permit = WorkingPermits::where('id', $id)->first();
         $user_id = auth()->user()->getAuthIdentifier();
@@ -287,6 +305,7 @@ class WorkingPermitController extends Controller
         } else {
             $permit->is_rejected = true;
             $permit->status = 'rejected';
+            $permit->rejected_comments = $request->rejectedComments;
             $permit->save();
             return redirect()->route('working-permits.show', $id)->with('success', 'Working Permit Rejected Successfully');
         }

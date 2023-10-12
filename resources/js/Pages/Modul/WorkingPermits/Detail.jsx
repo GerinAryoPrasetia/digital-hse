@@ -1,3 +1,5 @@
+import Modal from "@/Components/Modal";
+import TextInput from "@/Components/TextInput";
 import formatDateToDDMMYYYYHHMM from "@/Helper/ParseDate";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 import { useForm } from "@inertiajs/react";
@@ -6,7 +8,7 @@ import React, { useEffect, useState } from "react";
 
 export default function Detail({ auth, permit, flash }) {
     // console.log("auth", auth.user.id);
-    console.log(permit);
+
     const [activeKey, setActiveKey] = useState(0);
     const [isSupervisor, setIsSupervisor] = useState(false);
     const [isOfficer, setIsOfficer] = useState(false);
@@ -24,25 +26,24 @@ export default function Detail({ auth, permit, flash }) {
         post(route("working-permits.reject", permit.id));
     };
 
-    // const dataSource = [
-    //     {
-    //         key: "1",
-    //         name: "Mike",
-    //         company: 32,
-    //         function: "10 Downing Street",
-    //     },
-    //     {
-    //         key: "2",
-    //         name: "John",
-    //         age: 42,
-    //         address: "10 Downing Street",
-    //     },
-    // ];
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const showModal = () => {
+        console.log("show modal");
+        setIsModalOpen(true);
+    };
+    const handleReject = () => {
+        post(route("working-permits.reject", permit.id));
+        setIsModalOpen(false);
+    };
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
     const dataSourceBrief = permit.user_brief?.map((item, index) => ({
         key: index,
         name: item.name,
         company: item.company_name,
         function: item.function_name,
+        noTelp: item.no_telp,
     }));
 
     const columns = [
@@ -60,6 +61,11 @@ export default function Detail({ auth, permit, flash }) {
             title: "Function",
             dataIndex: "function",
             key: "function",
+        },
+        {
+            title: "No. Telp",
+            dataIndex: "noTelp",
+            key: "noTelp",
         },
     ];
 
@@ -324,95 +330,80 @@ export default function Detail({ auth, permit, flash }) {
     }, [clicked, activeKey]);
 
     return (
-        <Authenticated user={auth.user}>
-            <div>
+        <>
+            <Modal
+                title="Basic Modal"
+                open={isModalOpen}
+                onOk={handleReject}
+                onCancel={handleCancel}
+            >
                 <div>
-                    <h3 className="text-center font-bold text-2xl mt-4">
-                        Permit {permit.permit_number}
-                    </h3>
-                    <p className="text-center text-sm mb-4">
-                        issued at :{" "}
-                        {formatDateToDDMMYYYYHHMM(permit.created_at)} WIB
-                    </p>
-                    {permit.is_rejected == 1 && (
-                        <div>
-                            <p className="text-center text-red-600 mb-4">
-                                This Permit is Rejected
-                            </p>
-                        </div>
-                    )}
-                    <div className="container mx-auto w-[80%] items-center">
-                        <div>
-                            <Steps
-                                direction="vertical"
-                                current={activeKey}
-                                size="small"
-                                items={[
-                                    {
-                                        title: "First Step Approval",
-                                        description:
-                                            "Approval from Supervisor " +
-                                            permit.supervisor.name,
-                                    },
-                                    {
-                                        title: "Second Step Approval",
-                                        description:
-                                            "Approval from Safety Officer " +
-                                            permit.officer.name,
-                                    },
-                                    {
-                                        title: "Work Done Approval",
-                                        description: "Work Done Approval",
-                                    },
-                                ]}
-                            />
-                        </div>
-                    </div>
+                    <p>Comments</p>
+                    <TextInput className="mt-1 block w-full" />
                 </div>
-                <Collapse defaultActiveKey={[]} items={items} />
-
-                {isSupervisor && permit.is_approved_first_step == 0 && (
+            </Modal>
+            <Authenticated user={auth.user}>
+                <div>
                     <div>
-                        <div className="flex justify-evenly my-4">
-                            <button
-                                className={
-                                    `bg-red-500 text-white px-4 py-2 rounded-lg ` +
-                                    (permit.is_rejected == 1 ? "hidden" : "")
-                                }
-                                onClick={reject}
-                            >
-                                Reject
-                            </button>
-
-                            <button
-                                className={
-                                    `bg-green-500 text-white px-4 py-2 rounded-lg ` +
-                                    (permit.is_rejected == 1 ? "hidden" : "")
-                                }
-                                onClick={apporve}
-                            >
-                                Approve First Approval
-                            </button>
+                        <h3 className="text-center font-bold text-2xl mt-4">
+                            Permit {permit.permit_number}
+                        </h3>
+                        <p className="text-center text-sm mb-4">
+                            issued at :{" "}
+                            {formatDateToDDMMYYYYHHMM(permit.created_at)} WIB
+                        </p>
+                        {permit.is_rejected == 1 && (
+                            <div>
+                                <p className="text-center text-red-600 mb-4">
+                                    This Permit is Rejected
+                                </p>
+                            </div>
+                        )}
+                        <div className="container mx-auto w-[80%] items-center">
+                            <div>
+                                <Steps
+                                    direction="vertical"
+                                    current={activeKey}
+                                    size="small"
+                                    items={[
+                                        {
+                                            title: "First Step Approval",
+                                            description:
+                                                "Approval from Supervisor " +
+                                                permit.supervisor.name,
+                                        },
+                                        {
+                                            title: "Second Step Approval",
+                                            description:
+                                                "Approval from Safety Officer " +
+                                                permit.officer.name,
+                                        },
+                                        {
+                                            title: "Work Done Approval",
+                                            description: "Work Done Approval",
+                                        },
+                                    ]}
+                                />
+                            </div>
                         </div>
-                        <div className="flex justify-center my-4"></div>
                     </div>
-                )}
-                {isOfficer &&
-                    permit.is_approved_second_step == 0 &&
-                    permit.is_approved_first_step == 1 && (
+                    <Collapse defaultActiveKey={[]} items={items} />
+
+                    {isSupervisor && permit.is_approved_first_step == 0 && (
                         <div>
                             <div className="flex justify-evenly my-4">
                                 <button
                                     className={
-                                        `bg-green-500 text-white px-4 py-2 rounded-lg ` +
+                                        `bg-red-500 text-white px-4 py-2 rounded-lg ` +
                                         (permit.is_rejected == 1
                                             ? "hidden"
                                             : "")
                                     }
-                                    onClick={reject}
+                                    onClick={showModal}
                                 >
                                     Reject
                                 </button>
+
                                 <button
                                     className={
                                         `bg-green-500 text-white px-4 py-2 rounded-lg ` +
@@ -422,37 +413,69 @@ export default function Detail({ auth, permit, flash }) {
                                     }
                                     onClick={apporve}
                                 >
-                                    Approve Second Approval
+                                    Approve First Approval
                                 </button>
                             </div>
                             <div className="flex justify-center my-4"></div>
                         </div>
                     )}
-                {isOfficer &&
-                    isSupervisor &&
-                    permit.is_approved_second_step == 1 &&
-                    permit.is_approved_first_step == 1 &&
-                    (permit.is_done_by_officer == 0 ||
-                        permit.is_done_by_supervisor == 0) && (
-                        <div>
-                            <div className="flex justify-evenly my-4">
-                                <button
-                                    className="bg-red-500 text-white px-4 py-2 rounded-lg"
-                                    onClick={reject}
-                                >
-                                    Reject
-                                </button>
-                                <button
-                                    className="bg-green-500 text-white px-4 py-2 rounded-lg"
-                                    onClick={apporve}
-                                >
-                                    Approve Work Done
-                                </button>
+                    {isOfficer &&
+                        permit.is_approved_second_step == 0 &&
+                        permit.is_approved_first_step == 1 && (
+                            <div>
+                                <div className="flex justify-evenly my-4">
+                                    <button
+                                        className={
+                                            `bg-green-500 text-white px-4 py-2 rounded-lg ` +
+                                            (permit.is_rejected == 1
+                                                ? "hidden"
+                                                : "")
+                                        }
+                                        onClick={showModal}
+                                    >
+                                        Reject
+                                    </button>
+                                    <button
+                                        className={
+                                            `bg-green-500 text-white px-4 py-2 rounded-lg ` +
+                                            (permit.is_rejected == 1
+                                                ? "hidden"
+                                                : "")
+                                        }
+                                        onClick={apporve}
+                                    >
+                                        Approve Second Approval
+                                    </button>
+                                </div>
+                                <div className="flex justify-center my-4"></div>
                             </div>
-                            <div className="flex justify-center my-4"></div>
-                        </div>
-                    )}
-            </div>
-        </Authenticated>
+                        )}
+                    {isOfficer &&
+                        isSupervisor &&
+                        permit.is_approved_second_step == 1 &&
+                        permit.is_approved_first_step == 1 &&
+                        (permit.is_done_by_officer == 0 ||
+                            permit.is_done_by_supervisor == 0) && (
+                            <div>
+                                <div className="flex justify-evenly my-4">
+                                    <button
+                                        className="bg-red-500 text-white px-4 py-2 rounded-lg"
+                                        onClick={showModal}
+                                    >
+                                        Reject
+                                    </button>
+                                    <button
+                                        className="bg-green-500 text-white px-4 py-2 rounded-lg"
+                                        onClick={apporve}
+                                    >
+                                        Approve Work Done
+                                    </button>
+                                </div>
+                                <div className="flex justify-center my-4"></div>
+                            </div>
+                        )}
+                </div>
+            </Authenticated>
+        </>
     );
 }

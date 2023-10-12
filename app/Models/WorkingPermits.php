@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\WP\NatureOfWork;
+use App\Models\WP\PermitToWork;
 use App\Models\WP\SafetyEquipment;
 use App\Models\WP\SafetyPersonal;
 use App\Models\WP\SafetyProcedure;
@@ -43,7 +44,8 @@ class WorkingPermits extends Model
         'status',
         'created_at',
         'updated_at',
-        'company_name'
+        'company_name',
+        'rejected_comments'
     ];
 
     public function issuer()
@@ -89,5 +91,10 @@ class WorkingPermits extends Model
     public function userBrief()
     {
         return $this->hasMany(WpUserBrief::class, 'wp_id');
+    }
+
+    public function permitToWork()
+    {
+        return $this->hasMany(PermitToWork::class, 'working_permit_id');
     }
 }
