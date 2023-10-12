@@ -13,13 +13,14 @@ export default function Modul({ auth }) {
             <div>
                 <div className=" bg-green-700 rounded-b-xl p-4">
                     <h3 className=" text-white text-xl">
-                        Welcome back, {auth.user.name} !
+                        Welcome back,{" "}
+                        <span className=" font-bold"> {auth.user.name} </span> !
                     </h3>
                 </div>
             </div>
             <div className="container px-6">
                 <Divider orientation="left">
-                    <p className="font-bold">Modul</p>
+                    <p className="font-bold">Choose Modul</p>
                 </Divider>
                 <Row gutter={16} className="mb-4">
                     <Col className="gutter-row" span={8}>
