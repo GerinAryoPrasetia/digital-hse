@@ -13,7 +13,7 @@ export default function Modul({ auth }) {
             <div>
                 <div className=" bg-green-700 rounded-b-xl p-4">
                     <h3 className=" text-white text-xl">
-                        Welcome, {auth.user.name} !
+                        Welcome back, {auth.user.name} !
                     </h3>
                 </div>
             </div>
