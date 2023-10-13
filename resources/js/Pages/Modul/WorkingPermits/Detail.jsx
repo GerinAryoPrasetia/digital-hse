@@ -1,4 +1,5 @@
 import Modal from "@/Components/Modal";
+import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import formatDateToDDMMYYYYHHMM from "@/Helper/ParseDate";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
@@ -352,6 +353,9 @@ export default function Detail({ auth, permit, flash }) {
                             issued at :{" "}
                             {formatDateToDDMMYYYYHHMM(permit.created_at)} WIB
                         </p>
+                        <div className="m-auto mt-4 mb-4 text-center">
+                            <PrimaryButton>Download as PDF</PrimaryButton>
+                        </div>
                         {permit.is_rejected == 1 && (
                             <div>
                                 <p className="text-center text-red-600 mb-4">

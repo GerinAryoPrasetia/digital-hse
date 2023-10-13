@@ -1,0 +1,124 @@
+{
+    "data" : {
+        "klasifikasi": [
+            {
+                "id": 1,
+                "value": "Luka/ Injury"
+            },
+            {
+                "id": 2,
+                "value": "Kebakaran/ Fire"
+            },
+            {
+                "id": 3,
+                "value": "Kerusakan Alat (Barang)/ Property Damage"
+            },
+            {
+                "id": 4,
+                "value": "Kerusakan Lingkungan/ Environmental Damage"
+            },
+            {
+                "id": 5,
+                "value": "Kerusakan Kendaraan/ Vehicle Damage"
+            },
+            {
+                "id": 6,
+                "value": "Hampir Celaka/ Near Miss"
+            }
+        ],
+        "machine": [
+            {
+                "id": 1,
+                "value": "Normal"
+            },
+            {
+                "id": 2,
+                "value": "Abnormal"
+            }
+        ],
+        "body": [
+            {
+                "id": 1,
+                "value": "Fit"
+            },
+            {
+                "id": 2,
+                "value": "Un-fit"
+            },
+            {
+                "id": 3,
+                "value": "Tired / less a rest"
+            }
+        ],
+        "working-hour": [
+            {
+                "id": 1,
+                "value": "Normal"
+            },
+            {
+                "id": 2,
+                "value": "Overtime"
+            },
+            {
+                "id": 3,
+                "value": "Rest Time"
+            }
+        ],
+        "document": [
+            {
+                "id": 1,
+                "value": "Available and adequate"
+            },
+            {
+                "id": 2,
+                "value": "Available but not adequate"
+            },
+            {
+                "id": 3,
+                "value": "Not Available"
+            }
+        ],
+        "ppe": [
+            {
+                "id": 1,
+                "value": "Not require"
+            },
+            {
+                "id": 2,
+                "value": "Required"
+            },
+            {
+                "id": 3,
+                "value": "Overtime"
+            }
+        ],
+        "kerugian": [
+            {
+                "id": 1,
+                "value": "< US$ 1,000"
+            },
+            {
+                "id": 2,
+                "value": "US$1,001 - US$5,000"
+            },
+            {
+                "id": 3,
+                "value": "US$1,001 - US$5,000"
+            }
+        ],
+        "level_category": [
+            {
+                "id": 1,
+                "value": "Berat Sekali (Catasthropic)"
+            },
+            {
+                "id": 2,
+                "value": "Berat (Major)"
+            },
+            {
+                "id": 3,
+                "value": "Sedang (Major)"
+            }
+        ]
+    }
+}

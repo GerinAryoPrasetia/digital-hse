@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Apar\AparController;
+use App\Http\Controllers\Incident\IncidentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WorkingPermit\WorkingPermitController as WorkingPermitWorkingPermitController;
 use App\Http\Controllers\WorkingPermitController;
@@ -58,6 +59,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/apar/verify', [AparController::class, 'verify'])->name('apar.verify');
     Route::get('/list-apars', [AparController::class, 'listApar'])->name('listApar');
     Route::get('/list-apars/verify', [AparController::class, 'listAparPic'])->name('listVerifyApar');
+
+    //incidents
+    Route::get('modul/incident', [IncidentController::class, 'index'])->name('incident.index');
+    Route::get('modul/incident/create', [IncidentController::class, 'create'])->name('incident.create');
 });
 
 require __DIR__ . '/auth.php';

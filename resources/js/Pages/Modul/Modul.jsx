@@ -41,7 +41,7 @@ export default function Modul({ auth }) {
                     </Col>
                     <Col className="gutter-row" span={8}>
                         <div className="p-2 bg-green-700 rounded-lg h-24 flex items-center justify-center">
-                            <Link href={route("coming-soon")}>
+                            <Link href={route("incident.index")}>
                                 <p className="text-center text-white">
                                     Incidents
                                 </p>
