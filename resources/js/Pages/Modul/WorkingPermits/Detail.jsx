@@ -126,10 +126,21 @@ export default function Detail({ auth, permit, flash }) {
             children: (
                 <div>
                     <div>
-                        <p>
+                        {/* <p>
                             <span className="font-bold">Permit to Work : </span>
                             {permit.permit_to_work}
+                        </p> */}
+                        <p>
+                            <span className="font-bold">Permit to Work : </span>
                         </p>
+                        <ul>
+                            {permit.permit_to_work.map((item, index) => (
+                                <li>
+                                    {" "}
+                                    {index + 1} . {item.data}
+                                </li>
+                            ))}
+                        </ul>
                         <p>
                             <span className="font-bold">Work Site : </span>
                             {permit.work_site}
