@@ -24,130 +24,130 @@ export default function Modul({ auth }) {
                 </Divider>
                 <Row gutter={16} className="mb-4">
                     <Col className="gutter-row" span={8}>
-                        <div className="p-2 bg-green-700 rounded-lg h-24 flex items-center justify-center">
-                            <Link href={route("working-permits.index")}>
+                        <Link href={route("working-permits.index")}>
+                            <div className="p-2 bg-green-700 rounded-lg h-24 flex items-center justify-center">
                                 <p className="text-center text-white">
                                     Working Permits
                                 </p>
-                            </Link>
-                        </div>
+                            </div>
+                        </Link>
                     </Col>
                     <Col className="gutter-row" span={8}>
-                        <div className="p-2 bg-green-700 rounded-lg h-24 flex items-center justify-center">
-                            <Link href={route("apar.index")}>
+                        <Link href={route("apar.index")}>
+                            <div className="p-2 bg-green-700 rounded-lg h-24 flex items-center justify-center">
                                 <p className="text-center text-white">APAR</p>
-                            </Link>
-                        </div>
+                            </div>
+                        </Link>
                     </Col>
                     <Col className="gutter-row" span={8}>
-                        <div className="p-2 bg-green-700 rounded-lg h-24 flex items-center justify-center">
-                            <Link href={route("incident.index")}>
+                        <Link href={route("incident.index")}>
+                            <div className="p-2 bg-green-700 rounded-lg h-24 flex items-center justify-center">
                                 <p className="text-center text-white">
                                     Incidents
                                 </p>
-                            </Link>
-                        </div>
+                            </div>
+                        </Link>
                     </Col>
                 </Row>
                 <Row gutter={16} className="mb-4">
                     <Col className="gutter-row" span={8}>
-                        <div className="p-2 bg-green-700 rounded-lg h-24 flex items-center justify-center">
-                            <Link href={route("coming-soon")}>
+                        <Link href={route("coming-soon")}>
+                            <div className="p-2 bg-green-700 rounded-lg h-24 flex items-center justify-center">
                                 <p className="text-center text-white">JSA</p>
-                            </Link>
-                        </div>
+                            </div>
+                        </Link>
                     </Col>
                     <Col className="gutter-row" span={8}>
-                        <div className="p-2 bg-green-700 rounded-lg h-24 flex items-center justify-center">
-                            <Link href={route("coming-soon")}>
+                        <Link href={route("coming-soon")}>
+                            <div className="p-2 bg-green-700 rounded-lg h-24 flex items-center justify-center">
                                 <p className="text-center text-white">
                                     Laporan UPTD
                                 </p>
-                            </Link>
-                        </div>
+                            </div>
+                        </Link>
                     </Col>
                     <Col className="gutter-row" span={8}>
-                        <div className="p-2 bg-green-700 rounded-lg h-24 flex items-center justify-center">
-                            <Link href={route("coming-soon")}>
+                        <Link href={route("coming-soon")}>
+                            <div className="p-2 bg-green-700 rounded-lg h-24 flex items-center justify-center">
                                 <p className="text-center text-white">
                                     Safety patrol
                                 </p>
-                            </Link>
-                        </div>
+                            </div>
+                        </Link>
                     </Col>
                 </Row>
                 <Row gutter={16} className="mb-4">
                     <Col className="gutter-row" span={8}>
-                        <div className="p-2 bg-green-700 rounded-lg h-24 flex items-center justify-center">
-                            <Link href={route("coming-soon")}>
+                        <Link href={route("coming-soon")}>
+                            <div className="p-2 bg-green-700 rounded-lg h-24 flex items-center justify-center">
                                 <p className="text-center text-white">
                                     Safety talk
                                 </p>
-                            </Link>
-                        </div>
+                            </div>
+                        </Link>
                     </Col>
                     <Col className="gutter-row" span={8}>
-                        <div className="p-2 bg-green-700 rounded-lg h-24 flex items-center justify-center">
-                            <Link href={route("coming-soon")}>
+                        <Link href={route("coming-soon")}>
+                            <div className="p-2 bg-green-700 rounded-lg h-24 flex items-center justify-center">
                                 <p className="text-center text-white">Hiradc</p>
-                            </Link>
-                        </div>
+                            </div>
+                        </Link>
                     </Col>
                     <Col className="gutter-row" span={8}>
-                        <div className="p-2 bg-green-700 rounded-lg h-24 flex items-center justify-center">
-                            <Link href={route("coming-soon")}>
+                        <Link href={route("coming-soon")}>
+                            <div className="p-2 bg-green-700 rounded-lg h-24 flex items-center justify-center">
                                 <p className="text-center text-white">
                                     Legal HSE
                                 </p>
-                            </Link>
-                        </div>
+                            </div>
+                        </Link>
                     </Col>
                 </Row>
                 <Row gutter={16} className="mb-4">
                     <Col className="gutter-row" span={8}>
-                        <div className="p-2 bg-green-700 rounded-lg h-24 flex items-center justify-center">
-                            <Link href={route("coming-soon")}>
+                        <Link href={route("coming-soon")}>
+                            <div className="p-2 bg-green-700 rounded-lg h-24 flex items-center justify-center">
                                 <p className="text-center text-white">
                                     Laporan Dinkes
                                 </p>
-                            </Link>
-                        </div>
+                            </div>
+                        </Link>
                     </Col>
                     <Col className="gutter-row" span={8}>
-                        <div className="p-2 bg-green-700 rounded-lg h-24 flex items-center justify-center">
-                            <Link href={route("coming-soon")}>
+                        <Link href={route("coming-soon")}>
+                            <div className="p-2 bg-green-700 rounded-lg h-24 flex items-center justify-center">
                                 <p className="text-center text-white">CSR</p>
-                            </Link>
-                        </div>
+                            </div>
+                        </Link>
                     </Col>
                     <Col className="gutter-row" span={8}>
-                        <div className="p-2 bg-green-700 rounded-lg h-24 flex items-center justify-center">
-                            <Link href={route("coming-soon")}>
+                        <Link href={route("coming-soon")}>
+                            <div className="p-2 bg-green-700 rounded-lg h-24 flex items-center justify-center">
                                 <p className="text-center text-white">
                                     Safety Riding
                                 </p>
-                            </Link>
-                        </div>
+                            </div>
+                        </Link>
                     </Col>
                 </Row>
                 <Row gutter={16} className="mb-4">
                     <Col className="gutter-row" span={8}>
-                        <div className="p-2 bg-green-700 rounded-lg h-24 flex items-center justify-center">
-                            <Link href={route("coming-soon")}>
+                        <Link href={route("coming-soon")}>
+                            <div className="p-2 bg-green-700 rounded-lg h-24 flex items-center justify-center">
                                 <p className="text-center text-white">
                                     Evakuasi drill
                                 </p>
-                            </Link>
-                        </div>
+                            </div>
+                        </Link>
                     </Col>
                     <Col className="gutter-row" span={8}>
-                        <div className="p-2 bg-green-700 rounded-lg h-24 flex items-center justify-center">
-                            <Link href={route("coming-soon")}>
+                        <Link href={route("coming-soon")}>
+                            <div className="p-2 bg-green-700 rounded-lg h-24 flex items-center justify-center">
                                 <p className="text-center text-white">
                                     APD control
                                 </p>
-                            </Link>
-                        </div>
+                            </div>
+                        </Link>
                     </Col>
                 </Row>
             </div>

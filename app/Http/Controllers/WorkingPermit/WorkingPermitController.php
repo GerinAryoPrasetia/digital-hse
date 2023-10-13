@@ -79,18 +79,18 @@ class WorkingPermitController extends Controller
     public function store(Request $request)
     {
         //
-        // dd($request->all());
+        dd($request->all());
         // dd(count($request->workArea));
 
         $issuer_id = auth()->user()->getAuthIdentifier();
         try {
+
             DB::beginTransaction();
             $working_permits = WorkingPermits::create([
                 'permit_number' => $request->permitNumber,
                 'issuer_id' => $issuer_id,
                 'supervisor_id' => $request->supervisorId,
                 'officer_id' => $request->safetyOfficerId,
-                'permit_to_work' => $request->permitToWork,
                 'equipment_to_work' => $request->equipmentToWorkOn,
                 'brief_of_work' => $request->briefDescriptionOfWork,
                 'remarks' => "",
@@ -126,7 +126,6 @@ class WorkingPermitController extends Controller
                     $originalName
                 );
             }
-
 
             foreach ($request->natureOfWork as $value) {
                 NatureOfWork::create([
@@ -181,7 +180,7 @@ class WorkingPermitController extends Controller
 
             DB::commit();
 
-            return redirect()->route("modul")->with('success', 'Working Permit Submitted Successfully');
+            return redirect()->route("working-permits.index")->with('success', 'Working Permit Submitted Successfully');
         } catch (\Throwable $th) {
             //throw $th;
             DB::rollBack();
@@ -297,6 +296,7 @@ class WorkingPermitController extends Controller
 
     public function reject(Request $request, string $id)
     {
+        dd($request->all());
         $permit = WorkingPermits::where('id', $id)->first();
         $user_id = auth()->user()->getAuthIdentifier();
 

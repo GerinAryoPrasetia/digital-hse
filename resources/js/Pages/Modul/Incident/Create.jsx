@@ -14,7 +14,14 @@ import Checkbox from "@/Components/Checkbox";
 import datas from "./data.json";
 
 export default function Create({ auth }) {
-    console.log(datas.data);
+    const [previewOpen, setPreviewOpen] = useState(false);
+    const [previewImage, setPreviewImage] = useState("");
+    const [previewTitle, setPreviewTitle] = useState("");
+    const handleCancel = () => setPreviewOpen(false);
+
+    const handleModal = () => {
+        setPreviewOpen(true);
+    };
     const steps = [
         {
             title: "KLASIFIKASI KECELAKAAN / ACCIDENT CLASSIFICATION",
@@ -160,13 +167,35 @@ export default function Create({ auth }) {
                     </PrimaryButton>
                 )}
                 {current === steps.length - 1 && (
-                    <PrimaryButton
-                        onClick={route("incident.index")}
-                        type="primary"
-                    >
+                    <PrimaryButton onClick={handleModal} type="primary">
                         Done
                     </PrimaryButton>
                 )}
+            </div>
+            <div>
+                <Modal
+                    open={previewOpen}
+                    title={previewTitle}
+                    footer={null}
+                    onCancel={handleCancel}
+                >
+                    <div className="flex flex-col items-center">
+                        <div className=" w-1/2 mb-4">
+                            <img
+                                src="/images/coming-soon.svg"
+                                alt=""
+                                className=""
+                            />
+                        </div>
+                        <p className="font-bold text-center">
+                            Opps Sorry... This Feature is Still Under
+                            Development.
+                        </p>
+                        <p>
+                            Call us, if you want to try it as soon as possible.
+                        </p>
+                    </div>
+                </Modal>
             </div>
         </Authenticated>
     );

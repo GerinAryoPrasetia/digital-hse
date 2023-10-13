@@ -30,7 +30,8 @@ class AparReport extends Model
         'apar_type',
         'apar_jenis',
         'apar_year_of_production',
-        'apar_report_number'
+        'apar_report_number',
+        'apar_weight',
     ];
 
     public function apar_area()

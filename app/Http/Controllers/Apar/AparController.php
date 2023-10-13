@@ -90,6 +90,7 @@ class AparController extends Controller
                 'apar_jenis' => $request->apar_jenis,
                 'apar_year_of_production' => $request->apar_year_of_production,
                 'apar_report_number' => $this->generateUniqueNumberReport(),
+                'apar_weight' => $request->apar_weight,
             ]);
 
             foreach ($request->apar_item_condition as $apar_ic) {

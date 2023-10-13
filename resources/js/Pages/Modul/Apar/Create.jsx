@@ -34,6 +34,7 @@ export default function Create({ auth, user, area, aparItem }) {
         p2k_id: "",
         month_checked: "",
         year_checked: "",
+        apar_weight: 0,
         //
         apar_item_condition: [],
         // apar_item_condition_remarks: [],
@@ -141,6 +142,23 @@ export default function Create({ auth, user, area, aparItem }) {
                             isFocused={true}
                             onChange={(e) =>
                                 setData("apar_production", e.target.value)
+                            }
+                        />
+                    </div>
+                    <div className="my-2">
+                        <InputLabel
+                            htmlFor="apar_weight"
+                            value="Apar Weight (Kg)"
+                        />
+                        <TextInput
+                            id="apar_weight"
+                            type="number"
+                            name="checked_by_id"
+                            value={data.apar_weight}
+                            className="mt-1 block w-full"
+                            isFocused={true}
+                            onChange={(e) =>
+                                setData("apar_weight", e.target.value)
                             }
                         />
                     </div>

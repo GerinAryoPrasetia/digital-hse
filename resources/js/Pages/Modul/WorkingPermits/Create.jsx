@@ -37,7 +37,7 @@ export default function WorkingPermitForm({ auth, issuer, permit, users }) {
         { id: "Isolated area", label: "Isolated area" },
         { id: "Elevated area", label: "Elevated area" },
         {
-            id: "Other area",
+            id: "Other",
             label: "Other area",
             checked: false,
             disabled: false,
@@ -207,9 +207,21 @@ export default function WorkingPermitForm({ auth, issuer, permit, users }) {
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState("");
     const [previewTitle, setPreviewTitle] = useState("");
+    const [otherInputs, setOtherInputs] = useState({});
 
     const handleCheckboxChange = (event) => {
         const { id, checked } = event.target;
+        console.log(id);
+
+        if (id == "Other") {
+            console.log("ok");
+            if (event.target.checked) {
+                setOtherInputs({ ...otherInputs, [id]: "" });
+            } else {
+                const { [id]: removed, ...rest } = otherInputs;
+                setOtherInputs(rest);
+            }
+        }
 
         // Clone the current state array to avoid mutating it directly
         const updatedCheckedItems = [...checkedItemsWorkArea];
@@ -228,6 +240,9 @@ export default function WorkingPermitForm({ auth, issuer, permit, users }) {
         // Update the state with the new array
         setCheckedItemsWorkArea(updatedCheckedItems);
         setData("workArea", updatedCheckedItems);
+    };
+    const handleOtherInputChange = (event) => {
+        setOtherInputs({ ...otherInputs, Other: event.target.value });
     };
     const handleCheckboxChangePermitWork = (event) => {
         const { id, checked } = event.target;
@@ -460,7 +475,6 @@ export default function WorkingPermitForm({ auth, issuer, permit, users }) {
                             value={data.issuerID}
                             className="mt-1 block w-full"
                             autoComplete="username"
-                            isFocused={true}
                             onChange={(e) =>
                                 setData("issuerID", e.target.value)
                             }
@@ -476,7 +490,6 @@ export default function WorkingPermitForm({ auth, issuer, permit, users }) {
                             value={data.issuerName}
                             className="mt-1 block w-full"
                             autoComplete=""
-                            isFocused={true}
                             onChange={(e) =>
                                 setData("issuerName", e.target.value)
                             }
@@ -495,7 +508,6 @@ export default function WorkingPermitForm({ auth, issuer, permit, users }) {
                             value={data.issuerSupervisor}
                             className="mt-1 block w-full"
                             autoComplete="username"
-                            isFocused={true}
                             onChange={(e) =>
                                 setData("issuerSupervisor", e.target.value)
                             }
@@ -514,7 +526,6 @@ export default function WorkingPermitForm({ auth, issuer, permit, users }) {
                             value={data.issuerDepartement}
                             className="mt-1 block w-full"
                             autoComplete=""
-                            isFocused={true}
                             onChange={(e) =>
                                 setData("issuerDepartement", e.target.value)
                             }
@@ -533,7 +544,6 @@ export default function WorkingPermitForm({ auth, issuer, permit, users }) {
                             value={data.equipmentToWorkOn}
                             className="mt-1 block w-full"
                             autoComplete="username"
-                            isFocused={true}
                             onChange={(e) =>
                                 setData("equipmentToWorkOn", e.target.value)
                             }
@@ -551,7 +561,6 @@ export default function WorkingPermitForm({ auth, issuer, permit, users }) {
                             value={data.companyName}
                             className="mt-1 block w-full"
                             autoComplete="username"
-                            isFocused={true}
                             onChange={(e) =>
                                 setData("companyName", e.target.value)
                             }
@@ -576,7 +585,6 @@ export default function WorkingPermitForm({ auth, issuer, permit, users }) {
                             value={data.permitNumber}
                             className="mt-1 block w-full"
                             autoComplete="username"
-                            isFocused={true}
                             onChange={(e) =>
                                 setData("permitNumber", e.target.value)
                             }
@@ -619,7 +627,6 @@ export default function WorkingPermitForm({ auth, issuer, permit, users }) {
                             value={data.workSite}
                             className="mt-1 block w-full"
                             autoComplete="username"
-                            isFocused={true}
                             onChange={(e) =>
                                 setData("workSite", e.target.value)
                             }
@@ -635,7 +642,6 @@ export default function WorkingPermitForm({ auth, issuer, permit, users }) {
                                         name="remember"
                                         key={item.id}
                                         id={item.id}
-                                        // // checked={data.remember}
                                         checked={checkedItemsWorkArea.includes(
                                             item.id
                                         )}
@@ -647,6 +653,18 @@ export default function WorkingPermitForm({ auth, issuer, permit, users }) {
                                 </label>
                             </div>
                         ))}
+                        {checkedItemsWorkArea.includes("Other") && (
+                            <div className="block mt-4">
+                                <TextInput
+                                    id="otherWorkArea"
+                                    type="text"
+                                    name="otherWorkArea"
+                                    className="mt-1 block w-full"
+                                    autoComplete=""
+                                    onChange={handleOtherInputChange}
+                                />
+                            </div>
+                        )}
                     </div>
                     <div className="mt-4">
                         <InputLabel
@@ -686,7 +704,6 @@ export default function WorkingPermitForm({ auth, issuer, permit, users }) {
                             value={data.briefDescriptionOfWork}
                             className="mt-1 block w-full"
                             autoComplete="username"
-                            isFocused={true}
                             onChange={(e) =>
                                 setData(
                                     "briefDescriptionOfWork",

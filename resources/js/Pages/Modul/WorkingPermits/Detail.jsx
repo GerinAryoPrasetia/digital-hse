@@ -1,10 +1,11 @@
-import Modal from "@/Components/Modal";
 import PrimaryButton from "@/Components/PrimaryButton";
+import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
 import formatDateToDDMMYYYYHHMM from "@/Helper/ParseDate";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 import { useForm } from "@inertiajs/react";
-import { Collapse, Image, Steps, Table } from "antd";
+import { Collapse, Image, Steps, Table, Modal } from "antd";
+import TextArea from "antd/es/input/TextArea";
 import React, { useEffect, useState } from "react";
 
 export default function Detail({ auth, permit, flash }) {
@@ -18,13 +19,11 @@ export default function Detail({ auth, permit, flash }) {
     const handleFlashClose = () => {
         setShowFlash(false);
     };
-    const { data, setData, post, processing, errors, reset } = useForm({});
+    const { data, setData, post, processing, errors, reset } = useForm({
+        rejectComment: "",
+    });
     const apporve = () => {
         post(route("working-permits.approve", permit.id));
-    };
-
-    const reject = () => {
-        post(route("working-permits.reject", permit.id));
     };
 
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -332,17 +331,6 @@ export default function Detail({ auth, permit, flash }) {
 
     return (
         <>
-            <Modal
-                title="Basic Modal"
-                open={isModalOpen}
-                onOk={handleReject}
-                onCancel={handleCancel}
-            >
-                <div>
-                    <p>Comments</p>
-                    <TextInput className="mt-1 block w-full" />
-                </div>
-            </Modal>
             <Authenticated user={auth.user}>
                 <div>
                     <div>
@@ -478,6 +466,29 @@ export default function Detail({ auth, permit, flash }) {
                                 <div className="flex justify-center my-4"></div>
                             </div>
                         )}
+                </div>
+                <div>
+                    <Modal
+                        title="Reject Working Permit"
+                        open={isModalOpen}
+                        onOk={handleReject}
+                        onCancel={handleCancel}
+                        okButtonProps={{ style: { backgroundColor: "blue" } }}
+                    >
+                        <div>
+                            <p>Reason</p>
+                            <TextAreaInput
+                                id="rejectComment"
+                                type="text"
+                                name="rejectComment"
+                                value={data.rejectComment}
+                                className="mt-1 block w-full"
+                                onChange={(e) =>
+                                    setData("rejectComment", e.target.value)
+                                }
+                            />
+                        </div>
+                    </Modal>
                 </div>
             </Authenticated>
         </>

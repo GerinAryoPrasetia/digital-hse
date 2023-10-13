@@ -4,7 +4,8 @@ import { Link } from "@inertiajs/react";
 import PrimaryButton from "@/Components/PrimaryButton";
 import List from "./List";
 
-export default function WorkingPermits({ auth, works, approval }) {
+export default function WorkingPermits({ auth, works, approval, success }) {
+    console.log(success);
     return (
         <Authenticated user={auth.user}>
             <div className="container m-auto">
