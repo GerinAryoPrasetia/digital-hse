@@ -79,7 +79,7 @@ class WorkingPermitController extends Controller
     public function store(Request $request)
     {
         //
-        dd($request->all());
+        // dd($request->all());
         // dd(count($request->workArea));
 
         $issuer_id = auth()->user()->getAuthIdentifier();
