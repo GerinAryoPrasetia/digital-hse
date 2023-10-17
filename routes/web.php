@@ -56,7 +56,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/modul/create', [App\Http\Controllers\Apar\AparController::class, 'create'])->name('apar.create');
     Route::post('/modul/apar', [App\Http\Controllers\Apar\AparController::class, 'store'])->name('apar.store');
     Route::get('/modul/apar/{id}', [AparController::class, 'show'])->name('apar.show');
-    Route::post('/apar/verify', [AparController::class, 'verify'])->name('apar.verify');
+    Route::post('/apar/verify', [AparController::class, 'verified'])->name('apar.verify');
     Route::get('/list-apars', [AparController::class, 'listApar'])->name('listApar');
     Route::get('/list-apars/verify', [AparController::class, 'listAparPic'])->name('listVerifyApar');
 

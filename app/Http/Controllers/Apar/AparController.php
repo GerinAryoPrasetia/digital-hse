@@ -172,9 +172,16 @@ class AparController extends Controller
             //code...
             DB::beginTransaction();
 
-            $apar_condition = AparCondition::where('id', $request->id)->first();
-            $apar_condition->verified_by_hse = $request->verified_by_hse;
-            $apar_condition->verified_by_p2k = $request->verified_by_p2k;
+            $apar_condition = AparCondition::where('apar_report_id', $request->apar_report_id)->first();
+            // dd($apar_condition);
+
+            if ($request->verified_by_hse == true) {
+                $apar_condition->verified_by_hse = true;
+            } else if ($request->verified_by_p2k == true) {
+                $apar_condition->verified_by_p2k = true;
+            }
+            // $apar_condition->verified_by_hse = $request->verified_by_hse;
+            // $apar_condition->verified_by_p2k = $request->verified_by_p2k;
             $apar_condition->save();
 
             DB::commit();
