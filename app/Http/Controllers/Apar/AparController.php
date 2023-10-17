@@ -180,8 +180,6 @@ class AparController extends Controller
             } else if ($request->verified_by_p2k == true) {
                 $apar_condition->verified_by_p2k = true;
             }
-            // $apar_condition->verified_by_hse = $request->verified_by_hse;
-            // $apar_condition->verified_by_p2k = $request->verified_by_p2k;
             $apar_condition->save();
 
             DB::commit();

@@ -7,6 +7,9 @@ import { useForm } from "@inertiajs/react";
 import { Collapse, Image, Steps, Table, Modal } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import React, { useEffect, useState } from "react";
+import ReactPDF, { PDFDownloadLink } from "@react-pdf/renderer";
+import WPDocument from "./WPDocument";
+import { PDFViewer } from "@react-pdf/renderer";
 
 export default function Detail({ auth, permit, flash }) {
     // console.log("auth", auth.user.id);
@@ -16,6 +19,8 @@ export default function Detail({ auth, permit, flash }) {
     const [isOfficer, setIsOfficer] = useState(false);
     const [showFlash, setShowFlash] = useState(true);
     const [clicked, setClicked] = useState(false);
+    const [dataPDF, setDataPDF] = useState(permit);
+    const [isClient, setIsClient] = useState(false);
     const handleFlashClose = () => {
         setShowFlash(false);
     };
@@ -340,9 +345,42 @@ export default function Detail({ auth, permit, flash }) {
         }
     }, [clicked, activeKey]);
 
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
+
+    // const downloadPDF = () => {
+    //     ReactPDF.render(<WPDocument data={dataPDF} />, `example.pdf`);
+    // };
+
+    const downloadPDF = () => {
+        // Use the PDFDownloadLink to render the WPDocument component with permit data
+        return (
+            <div>
+                <PDFDownloadLink
+                    document={<WPDocument data={permit} />}
+                    fileName="somename.pdf"
+                >
+                    {({ blob, url, loading, error }) =>
+                        loading ? (
+                            "Loading document..."
+                        ) : (
+                            <PrimaryButton>Save as PDF</PrimaryButton>
+                        )
+                    }
+                </PDFDownloadLink>
+            </div>
+        );
+    };
+
     return (
         <>
             <Authenticated user={auth.user}>
+                <div className="w-full">
+                    <PDFViewer width={"100%"} height={"1000px"}>
+                        <WPDocument data={permit} />
+                    </PDFViewer>
+                </div>
                 <div>
                     <div>
                         <h3 className="text-center font-bold text-2xl mt-4">
@@ -353,7 +391,7 @@ export default function Detail({ auth, permit, flash }) {
                             {formatDateToDDMMYYYYHHMM(permit.created_at)} WIB
                         </p>
                         <div className="m-auto mt-4 mb-4 text-center">
-                            <PrimaryButton>Download as PDF</PrimaryButton>
+                            {downloadPDF()}
                         </div>
                         {permit.is_rejected == 1 && (
                             <div>

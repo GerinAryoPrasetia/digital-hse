@@ -220,9 +220,16 @@ export default function Detail({ auth, apar }) {
     return (
         <Authenticated user={auth.user}>
             <div className="container m-auto">
-                <h3 className="text-center my-4 font-bold text-xl">
-                    {apar.apar_report_number}
-                </h3>
+                <h4 className="text-center my-4  text-xl">
+                    APAR <span className="font-bold">{apar.apar_number}</span>{" "}
+                    on Area{" "}
+                    <span className="font-bold">
+                        {apar.apar_area.area_name}
+                    </span>
+                </h4>
+                <p className="text-center mb-4">
+                    Report No. {apar.apar_report_number}
+                </p>
                 <Collapse items={items} />
                 {apar.apar_condition[0]?.p2k_id == auth.user.id &&
                     apar.apar_condition[0]?.verified_by_p2k == 0 && (
