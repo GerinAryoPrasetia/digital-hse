@@ -1,8 +1,17 @@
 import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
-import React, { useEffect, useState } from "react";
-import { Button, Collapse, Modal, Select, Steps, Upload, theme } from "antd";
+import React, { useEffect, useRef, useState } from "react";
+import {
+    Button,
+    Collapse,
+    Modal,
+    Select,
+    Steps,
+    TimePicker,
+    Upload,
+    theme,
+} from "antd";
 import { useForm } from "@inertiajs/react";
 import TextInput from "@/Components/TextInput";
 import InputError from "@/Components/InputError";
@@ -12,11 +21,18 @@ import Dropdown from "@/Components/Dropdown";
 import Checkbox from "@/Components/Checkbox";
 
 import datas from "./data.json";
+import SecondaryButton from "@/Components/SecondaryButton";
 
 export default function Create({ auth }) {
+    const formatTime = "HH:mm";
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState("");
     const [previewTitle, setPreviewTitle] = useState("");
+    const [value, setValue] = useState(null);
+    const timeRef = useRef(null);
+    const onChange = (time, timeString) => {
+        setValue(time);
+    };
     const handleCancel = () => setPreviewOpen(false);
 
     const handleModal = () => {
@@ -82,10 +98,9 @@ export default function Create({ auth }) {
                     </div>
                     <div>
                         <InputLabel htmlFor="divisi" value="Waktu Kejadian" />
-                        <TextInput
-                            id="issuerID"
-                            type="text"
-                            name="issuerID"
+                        <TimePicker
+                            format={formatTime}
+                            onChange={onChange}
                             className="mt-1 block w-full"
                         />
                     </div>
@@ -103,15 +118,17 @@ export default function Create({ auth }) {
                     </div>
                     <div>
                         <InputLabel htmlFor="divisi" value="Jam Dilaporkan" />
-                        <TextInput
-                            id="issuerID"
-                            type="text"
-                            name="issuerID"
+                        <TimePicker
+                            format={formatTime}
                             className="mt-1 block w-full"
                         />
                     </div>
                 </div>
             ),
+        },
+        {
+            title: "URAIAN KEJADIAN / DESCRIPTION OF INCIDENT",
+            content: "",
         },
     ];
 
