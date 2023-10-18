@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('accident_id');
             $table->foreign('accident_id')->references('id')->on('accident');
             $table->string('classification');
-            $table->timestamps();
         });
     }
 

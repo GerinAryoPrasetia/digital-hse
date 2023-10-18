@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('id_number');
             $table->string('saksi');
             $table->string('id_number_saksi');
-            $table->timestamps();
         });
     }
 
