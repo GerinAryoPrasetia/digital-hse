@@ -63,6 +63,11 @@ Route::middleware('auth')->group(function () {
     //incidents
     Route::get('modul/incident', [IncidentController::class, 'index'])->name('incident.index');
     Route::get('modul/incident/create', [IncidentController::class, 'create'])->name('incident.create');
+    Route::post('/image-upload', [IncidentController::class, 'uploadImage'])->name('image.upload');
+    // routes/web.php
+
+    Route::any('/ckfinder/connector', '\CKSource\CKFinderBridge\CKFinderBridgeController@requestAction')
+        ->middleware('web');
 });
 
 require __DIR__ . '/auth.php';

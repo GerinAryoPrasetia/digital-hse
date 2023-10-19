@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('accident_injured_person_id');
             $table->foreign('accident_injured_person_id')->references('id')->on('accident_injured_person');
             $table->string('nature');
-            $table->timestamps();
         });
     }
 

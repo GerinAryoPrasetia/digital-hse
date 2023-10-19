@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Incident;
 
 use App\Http\Controllers\Controller;
+use DOMDocument;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class IncidentController extends Controller
@@ -64,5 +66,40 @@ class IncidentController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function uploadImage(Request $request)
+    {
+        if ($request->hasFile('upload')) {
+            $originName = $request->file('upload')->getClientOriginalName();
+            $fileName = pathinfo($originName, PATHINFO_FILENAME);
+            $extension = $request->file('upload')->getClientOriginalExtension();
+            $fileName = $fileName . '_' . time() . '.' . str_replace(' ', '', $extension);
+            // $file->move(Storage::path('public/news-images'), $filename);
+
+            $request->file('upload')->move(Storage::path('public/accident-images'), $fileName);
+
+            // $url = asset('media/' . $fileName);
+            $url = asset('storage/accident-images/' . $fileName);
+            return response()->json(['fileName' => $fileName, 'uploaded' => 1, 'url' => $url]);
+        }
+    }
+
+    private function processImage($content)
+    {
+        $dom = new DOMDocument();
+        $dom->loadHTML($content, LIBXML_NOERROR);
+
+        $images = $dom->getElementsByTagName('img');
+        $figure = $dom->getElementsByTagName('figure');
+        foreach ($images as $image) {
+            $image->setAttribute('style', 'width: 100%; margin: 0 auto;');
+        }
+
+        foreach ($figure as $fig) {
+            $fig->setAttribute('style', 'text-align: center;');
+        }
+
+        return $dom->saveHTML();
     }
 }

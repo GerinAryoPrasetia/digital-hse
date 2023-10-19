@@ -50,7 +50,7 @@
                 "value": "Tired / less a rest"
             }
         ],
-        "working-hour": [
+        "working_hour": [
             {
                 "id": 1,
                 "value": "Normal"

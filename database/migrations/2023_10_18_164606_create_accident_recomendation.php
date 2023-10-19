@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('pic');
             $table->timestamp('plan_end_date')->nullable();
             $table->timestamp('actual_end_date')->nullable();
-            $table->timestamps();
         });
     }
 
