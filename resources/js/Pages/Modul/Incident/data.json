@@ -119,6 +119,276 @@
                 "id": 3,
                 "value": "Sedang (Major)"
             }
+        ],
+        "nature_injury_detail": [
+            {
+                "id": 1,
+                "value": "Patah / Retak tulang (Fractures)"
+            },
+            {
+                "id": 2,
+                "value": "Patah / Retak tulang belakang (Fractures - vertebral column)"
+            },
+            {
+                "id": 3,
+                "value": "Dislokasi (Dislocation)"
+            },
+            {
+                "id": 4,
+                "value": "Keseleo/ terkilir (Sprains and Strains)"
+            },
+            {
+                "id": 5,
+                "value": "Cidera kepala bagian dalam (Intracanial injuries)"
+            },
+            {
+                "id": 6,
+                "value": "Luka dalam - chest/abdomen/pelvis (Internal)"
+            },
+            {
+                "id": 7,
+                "value": "Amputasi (Amputation)"
+            },
+            {
+                "id": 8,
+                "value": "Luka tusuk / terbuka (Open wounds)"
+            },
+            {
+                "id": 9,
+                "value": "Luka Lecet (Superficial injuries)"
+            },
+            {
+                "id": 10,
+                "value": "Luka Memar (Contusion/bruise)"
+            },
+            {
+                "id": 11,
+                "value": "Kemasukan benda Asing (Foreign bodies)"
+            },
+            {
+                "id": 12,
+                "value": "Luka Bakar (Burns)"
+            },
+            {
+                "id": 13,
+                "value": "Urat syaraf dan syaraf tulang belakang (Nerves and spinal cords)"
+            },
+            {
+                "id": 14,
+                "value": "Keracunan (Poisoning)"
+            },
+            {
+                "id": 15,
+                "value": "Bagian luar tubuh (External)"
+            },
+            {
+                "id": 16,
+                "value": "Cidera lebih dari satu (Multiple injuries)"
+            },
+            {
+                "id": 17,
+                "value": "Kerusakan alat bantu medis (Damage to aritificial aids)"
+            },
+            {
+                "id": 18,
+                "value": "Lain-Lain (Unspecified)"
+            }
+            
+        ],
+        "body_injury_detail": [
+            {
+                "id": 1,
+                "value": "Tangan dan bahu (Arms and shoulders) - Kanan (Right)"
+            },
+            {
+                "id": 2,
+                "value": "Tangan dan bahu (Arms and shoulders) - Kiri (Left)"
+            },
+            {
+                "id": 3,
+                "value": "Telinga (Ear) - Kanan (Right)"
+            },
+            {
+                "id": 4,
+                "value": "Telinga (Ear) - Kiri (Left)"
+            },
+            {
+                "id": 5,
+                "value": "Mata (Eye) - Kanan (Right)"
+            },
+            {
+                "id": 6,
+                "value": "Mata (Eye) - Kiri (Left)"
+            },
+            {
+                "id": 7,
+                "value": "Tapak dan jari kaki (Feet and toes) - Kanan (Right)"
+            },
+            {
+                "id": 8,
+                "value": "Tapak dan jari kaki (Feet and toes) - Kiri (Left)"
+            },
+            {
+                "id": 9,
+                "value": "Pergelangan kaki (Ankle) - Kanan (Right)"
+            },
+            {
+                "id": 10,
+                "value": "Pergelangan kaki (Ankle) - Kiri (Left)"
+            },
+            {
+                "id": 11,
+                "value": "Tapak dan jari tangan (Hands and fingers) - Kanan (Right)"
+            },
+            {
+                "id": 12,
+                "value": "Tapak dan jari tangan (Hands and fingers) - Kiri (Left)"
+            },
+            {
+                "id": 13,
+                "value": "Lutut (Knee) - Kanan (Right)"
+            },
+            {
+                "id": 14,
+                "value": "Lutut (Knee) - Kiri (Left)"
+            },
+            {
+                "id": 15,
+                "value": "Tungkai kaki dan pinggul (Legs and hips) - Kanan (Right)"
+            },
+            {
+                "id": 16,
+                "value": "Tungkai kaki dan pinggul (Legs and hips) - Kiri (Left)"
+            },
+            {
+                "id": 17,
+                "value": "Punggung (Back)"
+            },
+            {
+                "id": 18,
+                "value": "Muka (Face)"
+            },
+            {
+                "id": 19,
+                "value": "Kepala (Head)"
+            },
+            {
+                "id": 20,
+                "value": "Organ dalam tubuh (Internal organs)"
+            }
+            ,
+            {
+                "id": 21,
+                "value": "Leher (Neck)"
+            },
+            {
+                "id": 124,
+                "value": "Badan (Trunk)"
+            }
+            ,
+            {
+                "id": 5124,
+                "value": "Lokasi lebih dari satu tempat (Multiple locations)"
+            }
+            
+        ],
+        "mechanism_injury_detail": [
+            {
+                "id": 1,
+                "value": "Jatuh dari ketinggian (Falls from height)"
+            },
+            {
+                "id": 2,
+                "value": "Jatuh tersandung (Falls on same level)"
+            },
+            {
+                "id": 3,
+                "value": "Menabrak / menghantam (Hitting object with body)"
+            },
+            {
+                "id": 4,
+                "value": "Getaran mekanis (Mechanical vibration)"
+            },
+            {
+                "id": 5,
+                "value": "Terpukul / tertabrak (Hit by moving objects)"
+            },
+            {
+                "id": 6,
+                "value": "Bunyi yang tajam dan tiba-tiba (Sharp and sudden sound)"
+            },
+            {
+                "id": 7,
+                "value": "Bunyi yang lama (Long term sound)"
+            },
+            {
+                "id": 8,
+                "value": "Tekanan (Pressure)"
+            },
+            {
+                "id": 9,
+                "value": "Gerakan berulang-ulang (Repetitive movements)"
+            },
+            {
+                "id": 10,
+                "value": "Stress otot lainnya (Other muscular stress)"
+            },
+            {
+                "id": 11,
+                "value": "Kelistrikan (Electricity)"
+            },
+            {
+                "id": 12,
+                "value": "Panas / dingin (Heat / cold)"
+            },
+            {
+                "id": 13,
+                "value": "Radiasi (Radiation)"
+            },
+            {
+                "id": 14,
+                "value": "Kontak langsung dengan bahan kimia (Single contact with chemical)"
+            },
+            {
+                "id": 15,
+                "value": "Kontak bahan kimia Jangka panjang (Long term contact with chemical)"
+            },
+            {
+                "id": 16,
+                "value": "Sengatan / gigitan (Stings / bites)"
+            },
+            {
+                "id": 17,
+                "value": "Faktor biologis (Biological factors)"
+            },
+            {
+                "id": 18,
+                "value": "Stress mental (Mental stress)"
+            },
+            {
+                "id": 1124,
+                "value": "Terpeleset "
+            },
+            {
+                "id": 1114,
+                "value": "Kecelakaan kendaraan (Vehicle accident)"
+            },
+            {
+                "id": 112,
+                "value": "Tertimpa (Hit by falling objects)"
+            },
+            {
+                "id": 1128,
+                "value": "Tergencet (Squeezed / caught In)"
+            },
+            {
+                "id": 1457,
+                "value": "Ruang terbatas (confined spaces)"
+            },
+            {
+                "id": 181,
+                "value": "Lain-Lain (Unspecified)"
+            }
         ]
     }
 }

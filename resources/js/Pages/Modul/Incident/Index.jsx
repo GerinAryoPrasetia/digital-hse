@@ -9,11 +9,11 @@ export default function Incidents({ auth, works, approval }) {
         <Authenticated user={auth.user}>
             <div className="container m-auto">
                 <h2 className="text-center font-bold text-2xl mt-4">
-                    Incident Report
+                    Accident Report
                 </h2>
                 <Link href={route("incident.create")}>
                     <div className="m-auto mt-4 mb-4 text-center">
-                        <PrimaryButton>Submit Incidents Report</PrimaryButton>
+                        <PrimaryButton>Create Accident Report</PrimaryButton>
                     </div>
                 </Link>
                 <div>

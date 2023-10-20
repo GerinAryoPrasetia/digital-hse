@@ -63,6 +63,7 @@ Route::middleware('auth')->group(function () {
     //incidents
     Route::get('modul/incident', [IncidentController::class, 'index'])->name('incident.index');
     Route::get('modul/incident/create', [IncidentController::class, 'create'])->name('incident.create');
+    Route::post('modul/incident', [IncidentController::class, 'store'])->name('incident.store');
     Route::post('/image-upload', [IncidentController::class, 'uploadImage'])->name('image.upload');
     // routes/web.php
 

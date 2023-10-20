@@ -3,31 +3,18 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 import React, { useEffect, useRef, useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
-import {
-    Button,
-    Collapse,
-    Modal,
-    Select,
-    Steps,
-    TimePicker,
-    Upload,
-    theme,
-} from "antd";
+import { Modal, Select, Steps, TimePicker, Upload, theme } from "antd";
 import { router, useForm } from "@inertiajs/react";
 import TextInput from "@/Components/TextInput";
-import InputError from "@/Components/InputError";
-import TextAreaInput from "@/Components/TextAreaInput";
-import Dropdown from "@/Components/Dropdown";
-// import Select from "@/Components/Select";
 import Checkbox from "@/Components/Checkbox";
 
 import datas from "./data.json";
 import SecondaryButton from "@/Components/SecondaryButton";
-import PersonInvolved from "./PersonInvolvedForm";
 import PersonInvolvedForm from "./PersonInvolvedForm";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import PersonInjuredForm from "./PersonInjuredForm";
+import RecommendationForm from "./RecommendationForm";
 
 export default function Create({ auth }) {
     const formatTime = "HH:mm";
@@ -42,6 +29,26 @@ export default function Create({ auth }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         personInvolved: [],
         personInjured: [],
+        attachments: [],
+        klasifikasi: [],
+        divisi: "",
+        departement: "",
+        seksi: "",
+        tanggalKejadian: "",
+        waktuKejadian: "",
+        tanggalDilaporkan: "",
+        jamDilaporkan: "",
+        jamMulaiKerja: "",
+        jamAkhirKerja: "",
+        lokasiKejadian: "",
+        namaPengawasKerja: "",
+        kerugianMaterial: "",
+        kategoriTingkatPenyelidikan: "",
+        keterangan: "",
+        uraianKejadian: "",
+        fotoPendukungUraianKejadian: "",
+        penyebabLangsungKecelakaan: [],
+        rekomendasi: [],
     });
 
     const handleEditorChange = (event, editor) => {
@@ -88,7 +95,16 @@ export default function Create({ auth }) {
     const addItemToFormData = () => {
         setData("personInvolved", [
             ...data.personInvolved,
-            { name: "", idNumber: "", saksi: "", idNumberSaksi: "" },
+            {
+                name: "",
+                idNumber: "",
+                saksi: "",
+                idNumberSaksi: "",
+                natureInjury: [],
+                bodyInjury: [],
+                mechanism: [],
+                keparahan: "",
+            },
         ]);
     };
 
@@ -112,6 +128,18 @@ export default function Create({ auth }) {
                 bodyPart: [],
                 mechanism: [],
                 keparahan: "",
+            },
+        ]);
+    };
+
+    const addItemToRecomedation = () => {
+        setData("rekomendasi", [
+            ...data.rekomendasi,
+            {
+                rekomendasi: "",
+                pic: "",
+                dueDate: "",
+                actualDueDate: "",
             },
         ]);
     };
@@ -142,6 +170,11 @@ export default function Create({ auth }) {
     const handleChangeImage = ({ fileList: newFileList }) => {
         setFileList(newFileList);
         setData("attachments", newFileList);
+    };
+
+    const submit = (e) => {
+        e.preventDefault();
+        post(route("incident.store"));
     };
 
     const steps = [
@@ -533,6 +566,7 @@ export default function Create({ auth }) {
                                     index={index} // Pass the index to the component
                                     formData={data}
                                     setFormData={setData}
+                                    datas={datas}
                                 />
                             </div>
                         ))}
@@ -544,6 +578,67 @@ export default function Create({ auth }) {
                                 Add Person
                             </PrimaryButton>
                         </div>
+                    </div>
+                </div>
+            ),
+        },
+        {
+            title: "Penyebab Lengkap dan Rekomendasi",
+            content: (
+                <div className="mx-5 my-4 text-left">
+                    <div>
+                        <InputLabel
+                            className="mb-2"
+                            value={
+                                "Penyebab Langung Kecelakaan (Tindakan & Kondisi Tidak Standar)"
+                            }
+                        />
+                        <CKEditor
+                            editor={ClassicEditor}
+                            data={content}
+                            onInit={(editor) => {
+                                editor.plugins.get(
+                                    "FileRepository"
+                                ).createUploadAdapter = (loader) => {
+                                    return {
+                                        upload: handleImageUpload,
+                                    };
+                                };
+                            }}
+                            config={{
+                                ckfinder: {
+                                    // Upload the images to the server using the CKFinder QuickUpload command
+                                    // You have to change this address to your server that has the ckfinder php connector
+                                    uploadUrl:
+                                        "/ckfinder/connector?command=QuickUpload&type=Images&responseType=json",
+                                },
+                            }}
+                            onChange={handleEditorChange}
+                        />
+                    </div>
+                    <div>
+                        <InputLabel
+                            value={"Rekomendasi / Recommendation"}
+                            className="mt-5"
+                        />
+                        {data.rekomendasi?.map((item, index) => (
+                            <div key={index}>
+                                <RecommendationForm
+                                    index={index} // Pass the index to the component
+                                    formData={data}
+                                    setFormData={setData}
+                                    datas={datas}
+                                />
+                            </div>
+                        ))}
+                    </div>
+                    <div>
+                        <PrimaryButton
+                            onClick={addItemToRecomedation}
+                            className=""
+                        >
+                            Add Recommendation
+                        </PrimaryButton>
                     </div>
                 </div>
             ),
@@ -602,9 +697,9 @@ export default function Create({ auth }) {
                     </PrimaryButton>
                 )}
                 {current === steps.length - 1 && (
-                    <PrimaryButton onClick={handleModal} type="primary">
-                        Done
-                    </PrimaryButton>
+                    <form onSubmit={submit}>
+                        <PrimaryButton type="primary">Done</PrimaryButton>
+                    </form>
                 )}
             </div>
             <div>

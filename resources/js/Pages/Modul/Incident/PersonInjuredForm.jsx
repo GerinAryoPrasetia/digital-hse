@@ -1,7 +1,11 @@
 import InputLabel from "@/Components/InputLabel";
+import SecondaryButton from "@/Components/SecondaryButton";
 import TextInput from "@/Components/TextInput";
 import { DatePicker, Select } from "antd";
 import React from "react";
+import InjuryDetailForm from "./RecommendationForm";
+import PrimaryButton from "@/Components/PrimaryButton";
+import datas from "./data.json";
 
 export default function PersonInjuredForm({ index, formData, setFormData }) {
     const data = formData.personInjured[index];
@@ -12,7 +16,7 @@ export default function PersonInjuredForm({ index, formData, setFormData }) {
         // Update the form data with the modified item
         setFormData((prevData) => ({
             ...prevData,
-            userBrief: [...prevData.userBrief],
+            personInjured: [...prevData.personInjured],
         }));
     };
 
@@ -23,7 +27,7 @@ export default function PersonInjuredForm({ index, formData, setFormData }) {
         // Update the form data with the modified item
         setFormData((prevData) => ({
             ...prevData,
-            userBrief: [...prevData.userBrief],
+            personInjured: [...prevData.personInjured],
         }));
     };
 
@@ -34,7 +38,7 @@ export default function PersonInjuredForm({ index, formData, setFormData }) {
         // Update the form data with the modified item
         setFormData((prevData) => ({
             ...prevData,
-            userBrief: [...prevData.userBrief],
+            personInjured: [...prevData.personInjured],
         }));
     };
 
@@ -45,8 +49,12 @@ export default function PersonInjuredForm({ index, formData, setFormData }) {
         // Update the form data with the modified item
         setFormData((prevData) => ({
             ...prevData,
-            userBrief: [...prevData.userBrief],
+            personInjured: [...prevData.personInjured],
         }));
+    };
+
+    const handleChange = (value) => {
+        console.log(`selected ${value}`);
     };
 
     return (
@@ -190,30 +198,83 @@ export default function PersonInjuredForm({ index, formData, setFormData }) {
                 />
             </div>
             <div>
+                <h2 className="block text-xl font-medium text-gray-700">
+                    Rincian Luka
+                </h2>
                 <InputLabel
                     className="block text-sm font-medium text-gray-700"
-                    value="Penyebab Kecelakaan"
+                    value="WUJUD CIDERA (NATURE OF INJURY)"
                 />
-                {/* <TextInput
-                    type="text"
-                    name="company"
-                    id="company"
-                    autoComplete="company-name"
-                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                /> */}
-            </div>
-            <div>
+                <Select
+                    mode="multiple"
+                    allowClear
+                    style={{
+                        width: "100%",
+                    }}
+                    placeholder="Please select"
+                    defaultValue={[]}
+                    onChange={(value) => {
+                        data.natureInjury = value;
+                        setFormData((prevData) => ({
+                            ...prevData,
+                            personInjured: [...prevData.personInjured],
+                        }));
+                    }}
+                    options={datas?.data.nature_injury_detail?.map((item) => ({
+                        label: item.value,
+                        value: item.value,
+                    }))}
+                />
                 <InputLabel
                     className="block text-sm font-medium text-gray-700"
-                    value="Rekomendasi"
+                    value="BAGIAN TUBUH YANG LUKA (PART OF BODY INJURED)"
                 />
-                {/* <TextInput
-                    type="text"
-                    name="company"
-                    id="company"
-                    autoComplete="company-name"
-                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                /> */}
+                <Select
+                    mode="multiple"
+                    allowClear
+                    style={{
+                        width: "100%",
+                    }}
+                    placeholder="Please select"
+                    defaultValue={[]}
+                    onChange={(value) => {
+                        data.bodyPart = value;
+                        setFormData((prevData) => ({
+                            ...prevData,
+                            personInjured: [...prevData.personInjured],
+                        }));
+                    }}
+                    options={datas?.data.body_injury_detail?.map((item) => ({
+                        label: item.value,
+                        value: item.value,
+                    }))}
+                />
+                <InputLabel
+                    className="block text-sm font-medium text-gray-700"
+                    value="MEKANISME CIDERA (MECHANISM OF INJURY)"
+                />
+                <Select
+                    mode="multiple"
+                    allowClear
+                    style={{
+                        width: "100%",
+                    }}
+                    placeholder="Please select"
+                    defaultValue={[]}
+                    onChange={(value) => {
+                        data.mechanism = value;
+                        setFormData((prevData) => ({
+                            ...prevData,
+                            personInjured: [...prevData.personInjured],
+                        }));
+                    }}
+                    options={datas?.data.mechanism_injury_detail?.map(
+                        (item) => ({
+                            label: item.value,
+                            value: item.value,
+                        })
+                    )}
+                />
             </div>
         </div>
     );
