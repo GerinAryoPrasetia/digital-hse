@@ -86,10 +86,37 @@ export default function WPDocument({ data }) {
                         />
                     </Svg>
                     {/* <Text style={styles.title}>{data.permit_number}</Text> */}
+
                     <View style={styles.section}>
-                        <Text style={styles.subHeading}>Requestor Detail</Text>
+                        <Text style={styles.subHeading}>
+                            Requestor Information
+                        </Text>
                         <Text style={styles.textContent}>
                             Permit Number : {data.permit_number}
+                        </Text>
+                        <Text style={styles.textContent}>
+                            Issuer Name : {data.issuer.name}
+                        </Text>
+                        <Text style={styles.textContent}>
+                            Issuer ID : {data.issuer.reference_id}
+                        </Text>
+                        <Text style={styles.textContent}>
+                            Issuer Email : {data.issuer.email}
+                        </Text>
+                        <Text style={styles.textContent}>
+                            Issuer Phone Number :
+                        </Text>
+                        <Text style={styles.textContent}>
+                            Company Name : {data.company_name}
+                        </Text>
+                        <Text style={styles.textContent}>
+                            Issuer Supervisor : {data.supervisor.name}
+                        </Text>
+                        <Text style={styles.textContent}>
+                            Issuer Department : {data.permit_number}
+                        </Text>
+                        <Text style={styles.textContent}>
+                            Equipment to Work On : {data.equipment_to_work}
                         </Text>
                     </View>
                 </View>

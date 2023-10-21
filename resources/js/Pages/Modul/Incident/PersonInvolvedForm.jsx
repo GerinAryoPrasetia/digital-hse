@@ -11,40 +11,40 @@ export default function PersonInvolvedForm({ index, formData, setFormData }) {
         // Update the form data with the modified item
         setFormData((prevData) => ({
             ...prevData,
-            userBrief: [...prevData.userBrief],
+            personInvolved: [...prevData.personInvolved],
         }));
     };
 
     const handleChangeCompany = (e) => {
         // Update the 'checked' field in the specific item
-        userBriefData.companyName = e.target.value;
+        userBriefData.idNumber = e.target.value;
 
         // Update the form data with the modified item
         setFormData((prevData) => ({
             ...prevData,
-            userBrief: [...prevData.userBrief],
+            personInvolved: [...prevData.personInvolved],
         }));
     };
 
     const handleChangeFunction = (e) => {
         // Update the 'checked' field in the specific item
-        userBriefData.functionName = e.target.value;
+        userBriefData.saksi = e.target.value;
 
         // Update the form data with the modified item
         setFormData((prevData) => ({
             ...prevData,
-            userBrief: [...prevData.userBrief],
+            personInvolved: [...prevData.personInvolved],
         }));
     };
 
     const handleChangeNoTelp = (e) => {
         // Update the 'checked' field in the specific item
-        userBriefData.noTelp = e.target.value;
+        userBriefData.idNumberSaksi = e.target.value;
 
         // Update the form data with the modified item
         setFormData((prevData) => ({
             ...prevData,
-            userBrief: [...prevData.userBrief],
+            personInvolved: [...prevData.personInvolved],
         }));
     };
 
@@ -76,7 +76,7 @@ export default function PersonInvolvedForm({ index, formData, setFormData }) {
                     name="company"
                     id="company"
                     autoComplete="company-name"
-                    value={userBriefData.companyName}
+                    value={userBriefData.idNum}
                     onChange={handleChangeCompany}
                     className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                 />
@@ -91,7 +91,7 @@ export default function PersonInvolvedForm({ index, formData, setFormData }) {
                     name="function"
                     id="function"
                     autoComplete="function-name"
-                    value={userBriefData.functionName}
+                    value={userBriefData.namaSaksi}
                     onChange={handleChangeFunction}
                     className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                 />
@@ -106,7 +106,7 @@ export default function PersonInvolvedForm({ index, formData, setFormData }) {
                     name="function"
                     id="function"
                     autoComplete="function-name"
-                    value={userBriefData.noTelp}
+                    value={userBriefData.idSaksi}
                     onChange={handleChangeNoTelp}
                     className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                 />

@@ -3,7 +3,15 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 import React, { useEffect, useRef, useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
-import { Modal, Select, Steps, TimePicker, Upload, theme } from "antd";
+import {
+    DatePicker,
+    Modal,
+    Select,
+    Steps,
+    TimePicker,
+    Upload,
+    theme,
+} from "antd";
 import { router, useForm } from "@inertiajs/react";
 import TextInput from "@/Components/TextInput";
 import Checkbox from "@/Components/Checkbox";
@@ -24,12 +32,15 @@ export default function Create({ auth }) {
     const [value, setValue] = useState(null);
     const timeRef = useRef(null);
     const [content, setContent] = useState("");
+    const [contentAnalysis, setContentAnalysis] = useState("");
     const [fileList, setFileList] = useState([]);
+    const [checkedItemsClassification, setCheckedItemsClassification] =
+        useState([]);
 
     const { data, setData, post, processing, errors, reset } = useForm({
         personInvolved: [],
         personInjured: [],
-        attachments: [],
+        // attachments: [],
         klasifikasi: [],
         divisi: "",
         departement: "",
@@ -46,14 +57,22 @@ export default function Create({ auth }) {
         kategoriTingkatPenyelidikan: "",
         keterangan: "",
         uraianKejadian: "",
-        fotoPendukungUraianKejadian: "",
+        fotoPendukungUraianKejadian: [],
         penyebabLangsungKecelakaan: [],
         rekomendasi: [],
+        analisisKejadian: "",
     });
 
     const handleEditorChange = (event, editor) => {
         const data = editor.getData();
         setContent(data);
+        setData("uraianKejadian", data);
+    };
+
+    const handleEditorChangeAnalysis = (event, editor) => {
+        const data = editor.getData();
+        setContentAnalysis(data);
+        setData("analisisKejadian", data);
     };
 
     const handleImageUpload = async (file) => {
@@ -100,9 +119,9 @@ export default function Create({ auth }) {
                 idNumber: "",
                 saksi: "",
                 idNumberSaksi: "",
-                natureInjury: [],
-                bodyInjury: [],
-                mechanism: [],
+                // natureInjury: [],
+                // bodyInjury: [],
+                // mechanism: [],
                 keparahan: "",
             },
         ]);
@@ -115,7 +134,6 @@ export default function Create({ auth }) {
                 name: "",
                 idNumber: "",
                 tanggalLahir: "",
-                idNumberSaksi: "",
                 kelamin: "",
                 jabatan: "",
                 lamaBekerja: "",
@@ -169,12 +187,41 @@ export default function Create({ auth }) {
     };
     const handleChangeImage = ({ fileList: newFileList }) => {
         setFileList(newFileList);
-        setData("attachments", newFileList);
+        setData("fotoPendukungUraianKejadian", newFileList);
     };
 
     const submit = (e) => {
         e.preventDefault();
         post(route("incident.store"));
+    };
+
+    const handleCheckboxChange = (
+        id,
+        checked,
+        checkedItems,
+        setCheckedItems,
+        dataKey,
+        dataSetter
+    ) => {
+        // Clone the current state array to avoid mutating it directly
+        const updatedCheckedItems = [...checkedItems];
+
+        if (checked) {
+            // If the checkbox is checked, add the ID to the array
+            updatedCheckedItems.push(id);
+        } else {
+            // If the checkbox is unchecked, remove the ID from the array
+            const index = updatedCheckedItems.indexOf(id);
+            if (index !== -1) {
+                updatedCheckedItems.splice(index, 1);
+            }
+        }
+
+        // Update the state with the new array
+        setCheckedItems(updatedCheckedItems);
+
+        // Update the data object with the new array
+        dataSetter(dataKey, updatedCheckedItems);
     };
 
     const steps = [
@@ -191,6 +238,19 @@ export default function Create({ auth }) {
                                         name="remember"
                                         key={item.id}
                                         id={item.id}
+                                        checked={checkedItemsClassification.includes(
+                                            item.value
+                                        )}
+                                        onChange={(event) => {
+                                            handleCheckboxChange(
+                                                item.value,
+                                                event.target.checked,
+                                                checkedItemsClassification,
+                                                setCheckedItemsClassification,
+                                                "klasifikasi",
+                                                setData
+                                            );
+                                        }}
                                     />
                                     <span className="ml-2 text-sm text-gray-600">
                                         {item.value}
@@ -206,6 +266,8 @@ export default function Create({ auth }) {
                             type="text"
                             name="issuerID"
                             className="mt-1 block w-full"
+                            value={data.divisi}
+                            onChange={(e) => setData("divisi", e.target.value)}
                         />
                     </div>
                     <div>
@@ -215,6 +277,10 @@ export default function Create({ auth }) {
                             type="text"
                             name="issuerID"
                             className="mt-1 block w-full"
+                            value={data.departement}
+                            onChange={(e) =>
+                                setData("departement", e.target.value)
+                            }
                         />
                     </div>
                     <div>
@@ -224,22 +290,28 @@ export default function Create({ auth }) {
                             type="text"
                             name="issuerID"
                             className="mt-1 block w-full"
+                            value={data.seksi}
+                            onChange={(e) => setData("seksi", e.target.value)}
                         />
                     </div>
                     <div>
                         <InputLabel htmlFor="divisi" value="Tanggal Kejadian" />
-                        <TextInput
+                        <DatePicker
                             id="issuerID"
-                            type="text"
-                            name="issuerID"
                             className="mt-1 block w-full"
+                            onChange={(date, dateString) =>
+                                setData("tanggalKejadian", dateString)
+                            }
                         />
                     </div>
                     <div>
                         <InputLabel htmlFor="divisi" value="Waktu Kejadian" />
                         <TimePicker
                             format={formatTime}
-                            onChange={onChange}
+                            // onChange={onChange}
+                            onChange={(time, timeString) => {
+                                handleChangetime("waktuKejadian", timeString);
+                            }}
                             className="mt-1 block w-full"
                         />
                     </div>
@@ -248,11 +320,12 @@ export default function Create({ auth }) {
                             htmlFor="divisi"
                             value="Tanggal Dilaporkan"
                         />
-                        <TextInput
+                        <DatePicker
                             id="issuerID"
-                            type="text"
-                            name="issuerID"
                             className="mt-1 block w-full"
+                            onChange={(date, dateString) =>
+                                setData("tanggalDilaporkan", dateString)
+                            }
                         />
                     </div>
                     <div>
@@ -260,6 +333,9 @@ export default function Create({ auth }) {
                         <TimePicker
                             format={formatTime}
                             className="mt-1 block w-full"
+                            onChange={(time, timeString) => {
+                                handleChangetime("jamDilaporkan", timeString);
+                            }}
                         />
                     </div>
                     <div>
@@ -267,7 +343,7 @@ export default function Create({ auth }) {
                         <TimePicker
                             format={formatTime}
                             onChange={(time, timeString) =>
-                                handleTimeChange("mulai_kerja", timeString)
+                                handleChangetime("jamMulaiKerja", timeString)
                             }
                             className="mt-1 block w-full"
                         />
@@ -276,7 +352,9 @@ export default function Create({ auth }) {
                         <InputLabel htmlFor="divisi" value="Jam Akhir Kerja" />
                         <TimePicker
                             format={formatTime}
-                            onChange={onChange}
+                            onChange={(time, timeString) =>
+                                handleChangetime("jamAkhirKerja", timeString)
+                            }
                             className="mt-1 block w-full text-black"
                         />
                     </div>
@@ -287,6 +365,9 @@ export default function Create({ auth }) {
                             type="text"
                             name="issuerID"
                             className="mt-1 block w-full"
+                            onChange={(e) => {
+                                setData("lokasiKejadian", e.target.value);
+                            }}
                         />
                     </div>
                     <div>
@@ -299,12 +380,16 @@ export default function Create({ auth }) {
                             type="text"
                             name="issuerID"
                             className="mt-1 block w-full"
+                            onChange={(e) => {
+                                setData("namaPengawasKerja", e.target.value);
+                            }}
                         />
                     </div>
                     <div>
                         <InputLabel
                             htmlFor="divisi"
                             value="Karyawan yang terlibat"
+                            className="mb-2"
                         />
                         {data.personInvolved?.map((item, index) => (
                             <div key={index}>
@@ -402,12 +487,29 @@ export default function Create({ auth }) {
                                 width: "100%",
                                 height: 42,
                             }}
-                            options={datas.data.klasifikasi?.map((data) => ({
+                            options={datas.data.machine?.map((data) => ({
                                 label: data.value,
                                 value: data.value,
                             }))}
                             onChange={(e) => {
-                                // setData("safetyOfficerId", e);
+                                // Get the current penyebabLangsungKecelakaan data
+                                const currentData =
+                                    data.penyebabLangsungKecelakaan;
+
+                                // Create a new object with the selected value and type
+                                const newData = {
+                                    type: "Machine/Equipment Condition",
+                                    condition: e,
+                                };
+
+                                // Append the new data to the existing data array
+                                const updatedData = [...currentData, newData];
+
+                                // Update the penyebabLangsungKecelakaan field in the form data
+                                setData(
+                                    "penyebabLangsungKecelakaan",
+                                    updatedData
+                                );
                             }}
                         />
                     </div>
@@ -423,7 +525,24 @@ export default function Create({ auth }) {
                                 value: data.value,
                             }))}
                             onChange={(e) => {
-                                // setData("safetyOfficerId", e);
+                                // Get the current penyebabLangsungKecelakaan data
+                                const currentData =
+                                    data.penyebabLangsungKecelakaan;
+
+                                // Create a new object with the selected value and type
+                                const newData = {
+                                    type: "Body Condition",
+                                    condition: e,
+                                };
+
+                                // Append the new data to the existing data array
+                                const updatedData = [...currentData, newData];
+
+                                // Update the penyebabLangsungKecelakaan field in the form data
+                                setData(
+                                    "penyebabLangsungKecelakaan",
+                                    updatedData
+                                );
                             }}
                         />
                     </div>
@@ -439,7 +558,24 @@ export default function Create({ auth }) {
                                 value: data.value,
                             }))}
                             onChange={(e) => {
-                                // setData("safetyOfficerId", e);
+                                // Get the current penyebabLangsungKecelakaan data
+                                const currentData =
+                                    data.penyebabLangsungKecelakaan;
+
+                                // Create a new object with the selected value and type
+                                const newData = {
+                                    type: "Working Hour",
+                                    condition: e,
+                                };
+
+                                // Append the new data to the existing data array
+                                const updatedData = [...currentData, newData];
+
+                                // Update the penyebabLangsungKecelakaan field in the form data
+                                setData(
+                                    "penyebabLangsungKecelakaan",
+                                    updatedData
+                                );
                             }}
                         />
                     </div>
@@ -455,7 +591,24 @@ export default function Create({ auth }) {
                                 value: data.value,
                             }))}
                             onChange={(e) => {
-                                // setData("safetyOfficerId", e);
+                                // Get the current penyebabLangsungKecelakaan data
+                                const currentData =
+                                    data.penyebabLangsungKecelakaan;
+
+                                // Create a new object with the selected value and type
+                                const newData = {
+                                    type: "Document / System",
+                                    condition: e,
+                                };
+
+                                // Append the new data to the existing data array
+                                const updatedData = [...currentData, newData];
+
+                                // Update the penyebabLangsungKecelakaan field in the form data
+                                setData(
+                                    "penyebabLangsungKecelakaan",
+                                    updatedData
+                                );
                             }}
                         />
                     </div>
@@ -471,7 +624,24 @@ export default function Create({ auth }) {
                                 value: data.value,
                             }))}
                             onChange={(e) => {
-                                // setData("safetyOfficerId", e);
+                                // Get the current penyebabLangsungKecelakaan data
+                                const currentData =
+                                    data.penyebabLangsungKecelakaan;
+
+                                // Create a new object with the selected value and type
+                                const newData = {
+                                    type: "PPE / Other Safety Equipment",
+                                    condition: e,
+                                };
+
+                                // Append the new data to the existing data array
+                                const updatedData = [...currentData, newData];
+
+                                // Update the penyebabLangsungKecelakaan field in the form data
+                                setData(
+                                    "penyebabLangsungKecelakaan",
+                                    updatedData
+                                );
                             }}
                         />
                     </div>
@@ -506,7 +676,7 @@ export default function Create({ auth }) {
                                 },
                             ]}
                             onChange={(e) => {
-                                // setData("safetyOfficerId", e);
+                                setData("kerugianMaterial", e);
                             }}
                         />
                     </div>
@@ -544,7 +714,7 @@ export default function Create({ auth }) {
                                 },
                             ]}
                             onChange={(e) => {
-                                // setData("safetyOfficerId", e);
+                                setData("kategoriTingkatPenyelidikan", e);
                             }}
                         />
                     </div>
@@ -559,6 +729,7 @@ export default function Create({ auth }) {
                         <InputLabel
                             htmlFor="divisi"
                             value="Orang yang cedera"
+                            className="mb-2"
                         />
                         {data.personInjured?.map((item, index) => (
                             <div key={index}>
@@ -595,7 +766,7 @@ export default function Create({ auth }) {
                         />
                         <CKEditor
                             editor={ClassicEditor}
-                            data={content}
+                            data={contentAnalysis}
                             onInit={(editor) => {
                                 editor.plugins.get(
                                     "FileRepository"
@@ -613,13 +784,13 @@ export default function Create({ auth }) {
                                         "/ckfinder/connector?command=QuickUpload&type=Images&responseType=json",
                                 },
                             }}
-                            onChange={handleEditorChange}
+                            onChange={handleEditorChangeAnalysis}
                         />
                     </div>
                     <div>
                         <InputLabel
                             value={"Rekomendasi / Recommendation"}
-                            className="mt-5"
+                            className="mt-5 mb-2"
                         />
                         {data.rekomendasi?.map((item, index) => (
                             <div key={index}>
@@ -671,6 +842,9 @@ export default function Create({ auth }) {
         <Authenticated user={auth.user}>
             {" "}
             <Steps current={current} items={items} className="mx-5 mt-4" />
+            <form onSubmit={submit}>
+                <PrimaryButton type="primary">Check data</PrimaryButton>
+            </form>
             <div style={contentStyle} className="mx-5">
                 {steps[current].content}
             </div>

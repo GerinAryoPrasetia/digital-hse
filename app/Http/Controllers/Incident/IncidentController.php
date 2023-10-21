@@ -3,8 +3,14 @@
 namespace App\Http\Controllers\Incident;
 
 use App\Http\Controllers\Controller;
+use App\Models\Accident\Accident;
+use App\Models\Accident\AccidentCauses;
+use App\Models\Accident\AccidentInjuredPerson;
+use App\Models\Accident\AccidnetClassification;
+use App\Models\Accident\PersonInvolved;
 use DOMDocument;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
@@ -35,6 +41,57 @@ class IncidentController extends Controller
     {
         //
         dd($request->all());
+        try {
+            DB::beginTransaction();
+            $accident = Accident::create([]);
+
+            $acc_id = $accident->id;
+
+            foreach ($request->klasifikasi as $val) {
+                AccidnetClassification::create([
+                    'accident_id' => $acc_id,
+                    'classification' => $val
+                ]);
+            }
+
+            foreach ($request->penyebabLangsungKecelakaan as $val) {
+                AccidentCauses::create([
+                    'accident_id' => $acc_id,
+                    'type' => $val['type'],
+                    'condition' => $val['condition'],
+                ]);
+            }
+
+            foreach ($request->personInvolved as $val) {
+                // Accide
+                PersonInvolved::create([
+                    'accident_id' => $acc_id,
+                    'name' => $val['name'],
+                    'id_number' => $val['idNumber'],
+                    'saksi' => $val['saksi'],
+                    'id_number_saksi' => $val['idNumberSaksi']
+                ]);
+            }
+
+            foreach ($request->personInjured as $val) {
+                AccidentInjuredPerson::create([
+                    'accident_id' => $acc_id,
+                    'name' => $val['name'],
+                    'id_number' => $val['idNumber'],
+                    'tanggal_lahir' => $val['tanggalLahir'],
+                    'jenis_kelamin' => $val['kelamin'],
+                    'jabatan' => $val['jabatan'],
+                    'lama_bekerja' => $val['lamaBekerja'],
+                    'id_number' => $val['bagian'],
+                    'seksi' => $val['seksi'],
+                    'is_perusahaan' => $val['isKaryawanPT'],
+                    'perusahaan' => $val['namaPerusahaan'],
+                    'nama_supervisor' => $val['namaPengawasKerja'],
+                ]);
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
     }
 
     /**

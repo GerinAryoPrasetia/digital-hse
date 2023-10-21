@@ -377,7 +377,7 @@ export default function Detail({ auth, permit, flash }) {
         <>
             <Authenticated user={auth.user}>
                 <div className="w-full">
-                    <PDFViewer width={"100%"} height={"1000px"}>
+                    <PDFViewer width={"100%"} height={"400px"}>
                         <WPDocument data={permit} />
                     </PDFViewer>
                 </div>

@@ -779,7 +779,6 @@ export default function WorkingPermitForm({ auth, issuer, permit, users }) {
                                         key={item.id}
                                         id={item.id}
                                         // // checked={data.remember}
-
                                         checked={checkedItemsSafetyProcedure.includes(
                                             item.id
                                         )}
@@ -922,8 +921,6 @@ export default function WorkingPermitForm({ auth, issuer, permit, users }) {
         title: item.title,
     }));
     const contentStyle = {
-        // lineHeight: "260px",
-        // textAlign: "center",
         color: token.colorTextTertiary,
         backgroundColor: token.colorFillAlter,
         borderRadius: token.borderRadiusLG,
