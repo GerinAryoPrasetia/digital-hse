@@ -842,9 +842,9 @@ export default function Create({ auth }) {
         <Authenticated user={auth.user}>
             {" "}
             <Steps current={current} items={items} className="mx-5 mt-4" />
-            <form onSubmit={submit}>
+            {/* <form onSubmit={submit}>
                 <PrimaryButton type="primary">Check data</PrimaryButton>
-            </form>
+            </form> */}
             <div style={contentStyle} className="mx-5">
                 {steps[current].content}
             </div>
@@ -871,9 +871,11 @@ export default function Create({ auth }) {
                     </PrimaryButton>
                 )}
                 {current === steps.length - 1 && (
-                    <form onSubmit={submit}>
-                        <PrimaryButton type="primary">Done</PrimaryButton>
-                    </form>
+                    // <form onSubmit={submit}>
+                    <PrimaryButton type="primary" onClick={handleModal}>
+                        Done
+                    </PrimaryButton>
+                    // </form>
                 )}
             </div>
             <div>
@@ -884,20 +886,17 @@ export default function Create({ auth }) {
                     onCancel={handleCancel}
                 >
                     <div className="flex flex-col items-center">
-                        <div className=" w-1/2 mb-4">
+                        {/* <div className=" w-1/2 mb-4">
                             <img
                                 src="/images/coming-soon.svg"
                                 alt=""
                                 className=""
                             />
-                        </div>
-                        <p className="font-bold text-center">
-                            Opps Sorry... This Feature is Still Under
-                            Development.
-                        </p>
-                        <p>
+                        </div> */}
+                        <p className="font-bold text-center">Success</p>
+                        {/* <p>
                             Call us, if you want to try it as soon as possible.
-                        </p>
+                        </p> */}
                     </div>
                 </Modal>
             </div>

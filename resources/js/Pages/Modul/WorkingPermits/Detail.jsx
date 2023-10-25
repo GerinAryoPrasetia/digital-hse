@@ -359,7 +359,7 @@ export default function Detail({ auth, permit, flash }) {
             <div>
                 <PDFDownloadLink
                     document={<WPDocument data={permit} />}
-                    fileName="somename.pdf"
+                    fileName={`permit-${permit.permit_number}.pdf`}
                 >
                     {({ blob, url, loading, error }) =>
                         loading ? (
@@ -377,9 +377,9 @@ export default function Detail({ auth, permit, flash }) {
         <>
             <Authenticated user={auth.user}>
                 <div className="w-full">
-                    <PDFViewer width={"100%"} height={"400px"}>
+                    {/* <PDFViewer width={"100%"} height={"400px"}>
                         <WPDocument data={permit} />
-                    </PDFViewer>
+                    </PDFViewer> */}
                 </div>
                 <div>
                     <div>
