@@ -3,7 +3,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 import React, { useState } from "react";
 import { Modal, Select, Steps, Upload, theme } from "antd";
-import { useForm } from "@inertiajs/react";
+import { useForm, usePage } from "@inertiajs/react";
 import TextInput from "@/Components/TextInput";
 import TextAreaInput from "@/Components/TextAreaInput";
 import Checkbox from "@/Components/Checkbox";
@@ -14,6 +14,10 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import RichEditor from "@/Components/RichEditor";
 
 export default function WorkingPermitForm({ auth, issuer, permit, users }) {
+    const { props } = usePage();
+    const errorMessage =
+        props.errors && props.errors.error ? props.errors.error : null;
+
     const getBase64 = (file) =>
         new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -207,12 +211,13 @@ export default function WorkingPermitForm({ auth, issuer, permit, users }) {
     const [previewTitle, setPreviewTitle] = useState("");
     const [otherInputs, setOtherInputs] = useState({});
 
+    const [previewOpenError, setPreviewOpenError] = useState(true);
+    const [previewTitleError, setPreviewTitleError] = useState("");
+    const handleCancelModalError = () => setPreviewOpenError(false);
     const handleCheckboxChange = (event) => {
         const { id, checked } = event.target;
-        console.log(id);
 
         if (id == "Other") {
-            console.log("ok");
             if (event.target.checked) {
                 setOtherInputs({ ...otherInputs, [id]: "" });
             } else {
@@ -452,7 +457,11 @@ export default function WorkingPermitForm({ auth, issuer, permit, users }) {
     };
     const submit = (e) => {
         e.preventDefault();
+        // console.log(errorMessage);
         post(route("working-permits.store"));
+        if (errorMessage != undefined) {
+            setPreviewOpenError(true);
+        }
     };
 
     const steps = [
@@ -966,9 +975,9 @@ export default function WorkingPermitForm({ auth, issuer, permit, users }) {
                         <form onSubmit={submit} encType="multipart/form-data">
                             <PrimaryButton
                                 type="primary"
-                                onClick={() =>
-                                    message.success("Processing complete!")
-                                }
+                                // onClick={() =>
+                                //     message.success("Processing complete!")
+                                // }
                             >
                                 Done
                             </PrimaryButton>
@@ -976,6 +985,33 @@ export default function WorkingPermitForm({ auth, issuer, permit, users }) {
                     )}
                 </div>
             </div>
+            {errorMessage && (
+                <div className="mb-4 ">
+                    {/* <h1>
+                        Lorem ipsum dolor sit, amet consectetur adipisicing
+                        elit. Itaque suscipit, magnam cum fugiat at est
+                        blanditiis nemo dolorum voluptate quae ea quisquam
+                        veniam architecto magni exercitationem rerum esse alias
+                        ducimus.
+                    </h1> */}
+                    <Modal
+                        open={previewOpenError}
+                        title={previewTitleError}
+                        footer={null}
+                        onCancel={handleCancelModalError}
+                    >
+                        <div className="flex flex-col items-center">
+                            <p className="font-bold text-center">
+                                {errorMessage}
+                            </p>
+                            <p className=" text-center">
+                                Terdapat beberapa data yang kosong <br />
+                                silahkan cek data anda kembali.
+                            </p>
+                        </div>
+                    </Modal>
+                </div>
+            )}
         </Authenticated>
     );
 }

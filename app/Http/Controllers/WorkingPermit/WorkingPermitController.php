@@ -184,7 +184,9 @@ class WorkingPermitController extends Controller
         } catch (\Throwable $th) {
             //throw $th;
             DB::rollBack();
-            return response()->json(['error' => $th->getMessage()]);
+            return redirect()->back()->withErrors([
+                'error' => 'ups, there was an error'
+            ]);
         }
     }
 
