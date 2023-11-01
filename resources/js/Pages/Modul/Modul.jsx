@@ -18,7 +18,7 @@ export default function Modul({ auth }) {
                     </h3>
                 </div>
             </div>
-            <div className="container px-6">
+            <div className="container px-6 w-full m-auto">
                 <Divider orientation="left">
                     <p className="font-bold">Choose Modul</p>
                 </Divider>

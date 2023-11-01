@@ -6,8 +6,6 @@ import {
     Document,
     StyleSheet,
     Image,
-    Svg,
-    Line,
 } from "@react-pdf/renderer";
 
 const styles = StyleSheet.create({

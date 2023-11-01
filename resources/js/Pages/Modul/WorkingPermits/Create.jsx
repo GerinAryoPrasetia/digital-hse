@@ -1,19 +1,17 @@
 import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
-import React, { useEffect, useState } from "react";
-import { Button, Collapse, Modal, Select, Steps, Upload, theme } from "antd";
+import React, { useState } from "react";
+import { Modal, Select, Steps, Upload, theme } from "antd";
 import { useForm } from "@inertiajs/react";
 import TextInput from "@/Components/TextInput";
-import InputError from "@/Components/InputError";
 import TextAreaInput from "@/Components/TextAreaInput";
-import Dropdown from "@/Components/Dropdown";
-// import Select from "@/Components/Select";
 import Checkbox from "@/Components/Checkbox";
 
-import { PlusOutlined, UploadOutlined } from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
 import UserBriefForm from "./UserBriefForm";
 import SecondaryButton from "@/Components/SecondaryButton";
+import RichEditor from "@/Components/RichEditor";
 
 export default function WorkingPermitForm({ auth, issuer, permit, users }) {
     const getBase64 = (file) =>
@@ -929,61 +927,54 @@ export default function WorkingPermitForm({ auth, issuer, permit, users }) {
     };
     return (
         <Authenticated user={auth.user}>
-            {/* <div className="container m-auto">
-                <h2 className="text-center font-bold text-xl my-4">
-                    Working Permit Form
-                </h2>
-                <Collapse
-                    items={items}
-                    defaultActiveKey={["1"]}
-                    onChange={onChange}
+            <div className="lg:w-[80%] lg:m-auto">
+                <Steps
+                    current={current}
+                    items={items2}
+                    className="mx-5 mt-4"
+                    direction="vertical"
                 />
-                <form onSubmit={submit} encType="multipart/form-data">
-                    <div className="m-auto mt-4 mb-12 text-center">
-                        <PrimaryButton disabled={processing}>
-                            Submit
-                        </PrimaryButton>
-                    </div>
-                </form>
-            </div> */}
-            <Steps current={current} items={items2} className="mx-5 mt-4" />
-            <div style={contentStyle} className="mx-5">
-                {steps[current].content}
-            </div>
-            <div
-                style={{
-                    marginTop: 24,
-                    marginBottom: 24,
-                }}
-                className="flex justify-end mx-5"
-            >
-                {current > 0 && (
-                    <SecondaryButton
-                        style={{
-                            margin: "0 8px",
-                        }}
-                        onClick={() => prev()}
-                    >
-                        Previous
-                    </SecondaryButton>
-                )}
-                {current < steps.length - 1 && (
-                    <PrimaryButton type="primary" onClick={() => next()}>
-                        Next
-                    </PrimaryButton>
-                )}
-                {current === steps.length - 1 && (
-                    <form onSubmit={submit} encType="multipart/form-data">
-                        <PrimaryButton
-                            type="primary"
-                            onClick={() =>
-                                message.success("Processing complete!")
-                            }
+                {/* <div className="mx-5">
+                    <RichEditor />
+                </div> */}
+                <div style={contentStyle} className="mx-5">
+                    {steps[current].content}
+                </div>
+                <div
+                    style={{
+                        marginTop: 24,
+                        marginBottom: 24,
+                    }}
+                    className="flex justify-end mx-5"
+                >
+                    {current > 0 && (
+                        <SecondaryButton
+                            style={{
+                                margin: "0 8px",
+                            }}
+                            onClick={() => prev()}
                         >
-                            Done
+                            Previous
+                        </SecondaryButton>
+                    )}
+                    {current < steps.length - 1 && (
+                        <PrimaryButton type="primary" onClick={() => next()}>
+                            Next
                         </PrimaryButton>
-                    </form>
-                )}
+                    )}
+                    {current === steps.length - 1 && (
+                        <form onSubmit={submit} encType="multipart/form-data">
+                            <PrimaryButton
+                                type="primary"
+                                onClick={() =>
+                                    message.success("Processing complete!")
+                                }
+                            >
+                                Done
+                            </PrimaryButton>
+                        </form>
+                    )}
+                </div>
             </div>
         </Authenticated>
     );
